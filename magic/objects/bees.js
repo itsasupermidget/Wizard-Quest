@@ -10,6 +10,7 @@ function bees(parent) {
   } else {
     parent.facing = -1
   }
+  console.log("BEESPAWN")
   if (player.position.distance(parent.position) < RANGE*TILE) {
     var speed = Math.round(player.position.distance(parent.position)/TILE/3);
     if (speed < 1) {

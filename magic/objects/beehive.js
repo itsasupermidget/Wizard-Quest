@@ -3,27 +3,28 @@ function beehive(parent) {
   const SWORDDAMAGE = 4;
   const SHARDDAMAGE = 16;
   const FIREDAMAGE = 6;
-  const BEEDAMAGE = 8;
+  const BEEDAMAGE = 12;
   const RANGE = 14;
   const RATE = 48;
-  function makeBees(hive) {
+  function makeBees() {
+    console.log(tick,parent.minions);
     if (tick%RATE==0) {
       for (var i=0;i<2;i++) {
-        if (hive.minions < 2) {
-          var bees = new body(new vector(hive.position.x, hive.position.y+TILE*i), new sprite(new vector(0,0), new vector(0,0)));
+        if (parent.minions < 2) {
+          var bees = new body(new vector(parent.position.x, parent.position.y), new sprite(new vector(0,0), new vector(0,0)));
           bees.name = "bees";
           bees.solid = false;
           collisions.push(bees);
-          hive.minions += 1;
+          parent.minions += 1;
           enemies += 1;
-          bees.owner = hive;
-          hive.hit(BEEDAMAGE);
+          bees.owner = parent;
+          parent.hit(BEEDAMAGE);
         }
       }
     }
   }
   if (parent.position.distance(player.position) < RANGE*TILE) {
-    makeBees(parent);
+    makeBees();
   }
   var hits = parent.collision();
   for (var i=0;i<hits.length;i++) {
@@ -32,12 +33,12 @@ function beehive(parent) {
       parent.hit(MISTDAMAGE);
       that.health = 0;
       that.dead = true;
-      makeBees(parent);
+      makeBees();
     }
     if (that.name == "sword" && that.debounce == 0) {
       parent.hit(SWORDDAMAGE);
       that.debounce = 10;
-      makeBees(parent);
+      makeBees();
     }
     if (that.name == "shard") {
       parent.hit(SHARDDAMAGE);
@@ -48,7 +49,7 @@ function beehive(parent) {
       parent.hit(FIREDAMAGE);
       that.health = 0;
       that.dead = true;
-      makeBees(parent);
+      makeBees();
     }
   }        
 }

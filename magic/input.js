@@ -47,7 +47,11 @@ function startButton() {
       //loadPassword(world+randomPair(0,6)+level+randomPair(0,6)+randomPair(1,99)+randomPair(0,6)+randomPair(10,99)+randomPair(5,99));
       loadPassword(world+"ZW"+level+"ZQ44ZXWZWZ");    
     } else {
-      loadPassword(password);
+      if (password.length > 1) {
+        loadPassword(password);
+      } else {
+        loadPassword("ZQZWZWZQ44ZXWZWZ");      
+      }
     }
     paused = false;
     modeSelect = false;        
@@ -55,8 +59,7 @@ function startButton() {
     if (password.length == 16) {
       modeSelect = 3;
       passwordScreen = false;
-      menu = 1;
-    }
+      menu = 1;    }
   } else if (settings) {
     settings = false;
     title = true;
