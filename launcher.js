@@ -7,7 +7,7 @@ function load(name) {
   } else if (type == "png") {
     object = document.createElement("img"); 
   }
-  object.src = "magic/"+name;0
+  object.src = "magic/"+name;
   LOADED.push(object);
   return object;
 }

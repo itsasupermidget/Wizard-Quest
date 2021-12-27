@@ -218,7 +218,7 @@ function body(position,s) {
         }
       }
     }
-    if (this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE && this.position.y < camera.y+SCREENHEIGHT*1.5 && this.position.y > camera.y-SCREENHEIGHT/2|| this == player || (boss) || this.health < 1 || this.name == "mist" || this.name == "fire") { //RENDER DISTANCE
+    if (this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE || this == player || (boss) || this.health < 1 || this.name == "mist" || this.name == "fire") { //RENDER DISTANCE
       if (this.flicker != false) {
         if (this == player) {
           this.visible = tick%2==0;
@@ -523,10 +523,10 @@ function body(position,s) {
           }
         }
       }
-      if (this.name == "beehive") {
+      if (this.name == "beehive" && this.health > 0) {
         beehive(this);
       }
-      if (this.name == "bees") {
+      if (this.name == "bees" && this.health > 0) {
         bees(this);
       }
       if (this.name == "plant" && this.health > 0) {
@@ -689,11 +689,6 @@ function body(position,s) {
           camera.y = (HEIGHT-canvas.height)/SCALE;
         }
       }
-      this.render(fromParent);
-      if (this.hitTimer > 0 && this.lastHit > 0) {
-        this.hitTimer -= 1;
-        drawNumbers(this.lastHit+" ",this.position.x-camera.x+this.sprite.size.x/2,this.position.y-camera.y+8-this.hitTimer);
-      }
       for (var i=0;i<this.children.length;i++) {
         var child = this.children[i];
         child.position = new vector(this.position.x-8, this.position.y);
@@ -723,6 +718,11 @@ function body(position,s) {
         } else {
           child.play(true);
         }
+      }
+      this.render(fromParent);
+      if (this.hitTimer > 0 && this.lastHit > 0) {
+        this.hitTimer -= 1;
+        drawNumbers(this.lastHit+" ",this.position.x-camera.x+this.sprite.size.x/2,this.position.y-camera.y+8-this.hitTimer);
       }
     }
     if (this.position.y > map.height*TILE && !loading) {

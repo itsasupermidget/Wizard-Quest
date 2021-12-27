@@ -33,7 +33,7 @@ function startButton() {
       difficultyGoal = 1;
     }
     if (modeSelect == 1) { //new game
-      loadPassword("ZWZZZWZW44ZZWZZ0") //ZWZZZZZW44ZZWZZ0 1,0 -- ZQZWZWZQ44ZXWZWZ 2,1
+      loadPassword("ZWZZZZZW44ZZWZZ0") //ZWZZZVZW44ZZWZZ0 1,0 -- ZQZWZWZQ44ZXWZWZ 2,1
     } else if (modeSelect == 2) {
       function randomPair(min,max) {
         return encrypt(Math.floor(Math.random()*(max-min+1)+min));

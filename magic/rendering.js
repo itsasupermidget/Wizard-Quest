@@ -120,7 +120,9 @@ setInterval(function() {
     if (!boss && camera) {
       for (var y=0;y<map.height;y++) {
         for (var x=0;x<map.width;x++) {
+        if (x*TILE < camera.x+SCREENWIDTH-TILE/2 && x*TILE > camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
           if (level.x == 1) { //w1 background
+            iY = y
             if (y > 11) {
               if (y > map.height-12) {
                 drawGui(80,48,TILE,TILE,x*TILE-camera.x,y*TILE-camera.y);       
@@ -138,6 +140,7 @@ setInterval(function() {
             if (y == 10) {
               drawGui(80,48,TILE,TILE/2,x*TILE-camera.x,y*TILE+8-camera.y);
             }            
+            y = iY
           } else {
             var backgroundLevel = 22;
             if (level.y == 2) {
@@ -149,7 +152,7 @@ setInterval(function() {
             if (level.y == 4 || level.y == 5) {
               backgroundLevel = 28;
             }
-            var height = Math.round((5-x%10)/3)+backgroundLevel;
+            var height = Math.round((6-x%10)/3)+backgroundLevel;
             if (y >= height) {
               if (y == height) {
                 drawGui(112,808,TILE,TILE,x*TILE-camera.x,y*TILE-camera.y); //grass
@@ -157,6 +160,7 @@ setInterval(function() {
                 drawGui(128,808,TILE,TILE,x*TILE-camera.x,y*TILE-camera.y); //dirt
               }
             }
+          }
           }
         }
       }
@@ -188,10 +192,10 @@ setInterval(function() {
     if (DEBUG) {
       drawNumbers(tick+" ", 8,8);
       drawNumbers(Math.round(tick/FPS)+" ", 8,16);
+      var unix = new Date().getTime();
+      drawNumbers(Math.round(1000/(unix-lastFrame))+"",8,32);
+      lastFrame = unix;
     }
-    var unix = new Date().getTime();
-    drawNumbers(Math.round(1000/(unix-lastFrame))+"",8,32);
-    lastFrame = unix;
     if (!boss) {
       drawText("progress",SCREENWIDTH/2+75,3);
       drawGui(104,160,36*Math.max(1,stageProgress),12,SCREENWIDTH/2+80,14); //progress gauge
