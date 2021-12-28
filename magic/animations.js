@@ -128,6 +128,18 @@ var KNIGHTDIERIGHT = new animation(
   [new sprite(new vector(64,96), new vector(16,32)),
   new sprite(new vector(80,96), new vector(16,32))], [0,0,1,1], 2
 );
+var LAVA = new animation(
+  [new sprite(new vector(112,48), new vector(16,8)),
+  new sprite(new vector(112,49), new vector(16,8)),
+  new sprite(new vector(112,50), new vector(16,8)),
+  new sprite(new vector(112,51), new vector(16,8)),
+  new sprite(new vector(112,52), new vector(16,8)),
+  new sprite(new vector(112,53), new vector(16,8)),
+  new sprite(new vector(112,54), new vector(16,8)),
+  new sprite(new vector(112,55), new vector(16,8)),
+  new sprite(new vector(112,56), new vector(16,8))],
+  [0,1,2,3,4,5,6,7,6,5,4,3,2,1], 5
+);
 var COIN = new animation(
   [new sprite(new vector(8,128), new vector(8,8)),
   new sprite(new vector(16,128), new vector(8,8)),

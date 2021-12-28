@@ -312,6 +312,13 @@ function playerScript(parent) {
   }
 }
 
+function reface(parent) {
+  if (parent.velocity.x > 0) {
+    parent.facing = 1;
+  } else if (parent.velocity.x < 0) {
+    parent.facing = -1;
+  }
+}
 function swingSword(parent) {
   if (parent.inventory.includes("sword") && !parent.attacks.includes("sword")) {
     parent.charging = false;      
@@ -330,6 +337,7 @@ function swingSword(parent) {
     collisions.push(sword);
     sword.parent = parent;
     playSound("swordswing");
+    reface(parent);
   }
 }
 
@@ -351,6 +359,7 @@ function swingStaff(parent) {
     collisions.push(staff);
     staff.parent = parent;
     playSound("swordswing");
+    reface(parent)
   }
 }
 
@@ -370,6 +379,7 @@ function mistAttack(parent) {
       parent.actionTimers.push([tick,0,4]);
     }  
   }
+  reface(parent)
 }
 
 function playerJump(parent) {
@@ -387,5 +397,6 @@ function playerJump(parent) {
     parent.jumps -= 1;
     parent.jumpCancel = false;
     parent.coyoteTime = 0;
+    reface(parent);
   }      
 }

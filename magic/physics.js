@@ -219,7 +219,7 @@ function body(position,s) {
         }
       }
     }
-    if (this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE || this == player || (boss) || this.health < 1 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
+    if ((this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE*2 && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE) || this == player || (boss) || this.health < 1 || this.velocity.y != 0 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
       if (this.flicker != false) {
         if (this == player) {
           this.visible = tick%2==0;
@@ -346,12 +346,12 @@ function body(position,s) {
       }    
       if (this.name == "rocks") {
         var distance = this.position.distance(player.position);
-        if (distance < 5*TILE) {
+        if (distance < 6*TILE) {
           this.acceleration.y = 1;
           if (player.position.x >= this.position.x) {
             this.acceleration.y = 1;
           }
-          if (player.position.x < this.position.x) {
+          if (player.position.x + player.sprite.size.x < this.position.x || (player.position.x-this.position.x < TILE*1.5 && player.position.x + player.sprite.size.x > this.position.x + this.sprite.size.x)) {
             this.velocity.y = -4;
           }
         }
@@ -665,7 +665,7 @@ function body(position,s) {
         }
       }
       this.position.add(this.velocity);
-      if (this.name == "player" && player.sprite) {
+      if (this.name == "player" && player.sprite && player.visible) {
         var side = SCREENWIDTH/2-player.sprite.size.x/2;
         var top = SCREENHEIGHT/2;
         var goal = new vector(player.position.x-side, player.position.y-top);
@@ -673,9 +673,11 @@ function body(position,s) {
           camera.x += Math.max(1, Math.abs(player.velocity.x))*(goal.x-camera.x)/Math.abs(goal.x-camera.x);
         }
         camera.y = goal.y;
-        if (spawn && player.position.x == spawn.x && player.position.y == spawn.y+1 || player.animation.name == "respawn") {
+        if (cameraReset) {
+          console.log(goal.x, camera.x)
           camera.x = goal.x;
           camera.y = goal.y;
+          cameraReset = false;
         }
         if (camera.x*SCALE < 0) {
           camera.x = 0;

@@ -1,4 +1,5 @@
 function generateLevel(stage) {
+  player.visible = false;
   var respawning = true;
   map = new Image();
   map.src = "magic/levels/"+stage.x+","+stage.y+".png";
@@ -13,8 +14,13 @@ function generateLevel(stage) {
   } else {
     message = "press start to save your password";
     messageTimer = 120;
+    player.position.x = spawn.x;
+    player.position.y = spawn.y;
   }
+  cameraReset = true;
   loading = true;
+  screen.fillStyle = "rgba(1,2,3,255)";
+  screen.fillRect(0,0,canvas.width,canvas.height);
   map.onload = function(){
     canvas.width = map.width;
     canvas.height = map.height;
@@ -35,6 +41,8 @@ function generateLevel(stage) {
         }
         if (r == 0 && g == 255 && b == 0 && respawning == false) {
           spawn = new vector(x*TILE,y*TILE-9);
+          player.position.x = spawn.x;
+          player.position.y = spawn.y;
         }
         if (r == 255 && g == 255 && b == 0) {
           var skeleton = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));
@@ -116,7 +124,17 @@ function generateLevel(stage) {
           var lava = new body(new vector(x*TILE,y*TILE), new sprite(new vector(112,48), new vector(16,16)));
           lava.name = "lava";
           lava.solid = false;
+          lava.animation = LAVA;
+          lava.start = tick;
+          lava.current = 0;
+          var lava2 = new body(new vector(x*TILE,y*TILE+TILE/2), new sprite(new vector(112,48), new vector(16,16)));
+          lava2.name = "lava";
+          lava2.solid = false;
+          lava2.animation = LAVA;
+          lava2.start = tick;
+          lava2.current = 0;
           collisions.push(lava);
+          collisions.push(lava2);          
         }
         if (r == 128 && g == 64 && b == 0) {
           var chest = new body(new vector(x*TILE,y*TILE), CHESTCLOSED);
@@ -303,5 +321,8 @@ function generateLevel(stage) {
     player.attacks = [];
     player.children = [];
     collisions.push(player);
+    player.visible = true;
+    screen.fillStyle = "rgba(1,2,3,255)";
+    screen.fillRect(0,0,canvas.width,canvas.height);
   } 
 }

@@ -1,3 +1,4 @@
+var cameraReset = false;
 function drawGui(sX,sY,w,h,x,y,width,height) {
   if (x == -1) {
     x = SCREENWIDTH/2-w/2;
@@ -120,7 +121,7 @@ setInterval(function() {
     if (!boss && camera) {
       for (var y=0;y<map.height;y++) {
         for (var x=0;x<map.width;x++) {
-        if (x*TILE < camera.x+SCREENWIDTH-TILE/2 && x*TILE > camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
+        if (x*TILE <= camera.x+SCREENWIDTH-TILE/2 && x*TILE >= camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
           if (level.x == 1) { //w1 background
             iY = y
             if (y > 11) {
