@@ -178,7 +178,7 @@ function playerScript(parent) {
     necklace.sprite = new sprite(new vector(128,600), new vector(8,8));
   }
   if (parent.animation && parent.animation.name == "swing") {
-    if (parent.attacks.includes("sword") && (parent.animation.current == 5 || parent.animation.current == 6 || (parent.animation.current > 4 && parent.animation.current < parent.chargeLevel) && player.mana >= 5)) {
+    if (parent.attacks.includes("sword") && (parent.animation.current == 5 || parent.animation.current == 6 || (parent.animation.current > 4 && parent.animation.current < parent.chargeLevel) && player.mana > 5)) {
       var shard = new body(new vector(parent.position.x+4+(parent.animation.order.length-parent.animation.current)*parent.animationFacing*2,parent.position.y+12-parent.animation.current), new sprite(new vector(0,0), new vector(0,0)));
       shard.animation = SWORDSHARD; 
       if (parent.animationFacing == -1) {
@@ -199,9 +199,9 @@ function playerScript(parent) {
     }
   }
   if (!parent.animation || (parent.animation.name != "attack" && parent.animation.name != "swing" && parent.animation.name != "jump" && parent.animation.name != "landing" && (parent.animation.name != "falling" || parent.flicker || parent.onplatform || parent.onstairs || parent.onladder || !parent.canMove(new vector(0,1)))) || parent.animation.current == parent.animation.order.length-1) {
-    if (parent.velocity.x > 0 && parent.facing == 1) {
+    if (parent.velocity.x != 0 && parent.facing == 1) {
       parent.animation = WALK;
-    } else if (parent.velocity.x < 0 && parent.facing == -1) {
+    } else if (parent.velocity.x != 0 && parent.facing == -1) {
       parent.animation = WALKLEFT;
     } else {
       if (parent.animationFacing == 1) {

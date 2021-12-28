@@ -6,7 +6,7 @@ function warrior(parent) {
   const MISTKNOCKBACK = 4;
   const MISTSTUN = 2;
   const SWORDDAMAGE = 5;
-  const SWORDKNOCKBACK = 4;
+  const SWORDKNOCKBACK = 5;
   const SWORDSTUN = 4;
   const SHARDDAMAGE = 15;
   const FIREDAMAGE = 8;

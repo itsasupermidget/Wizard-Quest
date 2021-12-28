@@ -144,9 +144,10 @@ function body(position,s) {
           }
         }
         if (this.name == "beehive" && this.animation != BROKENBEEHIVE) {
-          this.animation = BROKENBEEHIVE;
+          this.name = "bees";
+          this.animation = BEES;
           this.animation.start = tick;
-          this.gravity = true;
+          this.health = 100;
         }
         if (this.name == "warrior") {
           if (this.animation != WARRIORDIE && this.animation != WARRIORDIELEFT) {
@@ -218,7 +219,7 @@ function body(position,s) {
         }
       }
     }
-    if (this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE || this == player || (boss) || this.health < 1 || this.name == "mist" || this.name == "fire") { //RENDER DISTANCE
+    if (this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE || this == player || (boss) || this.health < 1 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
       if (this.flicker != false) {
         if (this == player) {
           this.visible = tick%2==0;
@@ -325,7 +326,7 @@ function body(position,s) {
           if ((that.name == "player" || that.name == "skeleton" || that.name == "warrior") && this.debounce == 0) {
             if (this.name == "rocks" || (this.name == "spikes" && that.position.y+that.sprite.size.y >= this.position.y+this.sprite.size.y/2)) {
               this.debounce = 10;
-              if (this.canMove(new vector(1,0),true) || this.canMove(new vector(-1,0),true) || this.gravity) {
+              if (this.canMove(new vector(1,0),true) || this.canMove(new vector(-1,0),true) || this.gravity || this.name == "rocks") {
                 that.hit(3);
               } else {
                 that.hit(1);
@@ -391,8 +392,8 @@ function body(position,s) {
               message = "resurrection!"
               messageTimer = 80;
             }
-            that.increaseHealth(20);
-            that.increaseMana(10);
+            that.increaseHealth(30);
+            that.increaseMana(15);
             playSound("collect");
             this.health = 0;
           }
@@ -406,7 +407,7 @@ function body(position,s) {
         }      
       }
       if (this.name == "timer") {
-        var frame = Math.floor((tick%120)/40)+1;
+        var frame = Math.floor((tick%240)/80)+1;
         this.visible = this.health == frame || this.health == 1 && frame == 2 || this.health == 2 && frame == 3 || this.health == 3 && frame == 1;
         this.solid = this.visible;
         var hits = this.collision();
@@ -664,7 +665,7 @@ function body(position,s) {
         }
       }
       this.position.add(this.velocity);
-      if (this.name == "player") {
+      if (this.name == "player" && player.sprite) {
         var side = SCREENWIDTH/2-player.sprite.size.x/2;
         var top = SCREENHEIGHT/2;
         var goal = new vector(player.position.x-side, player.position.y-top);

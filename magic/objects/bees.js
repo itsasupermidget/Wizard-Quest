@@ -10,8 +10,14 @@ function bees(parent) {
   } else {
     parent.facing = -1
   }
-  console.log("BEESPAWN")
+  if (parent.facing == 1) {
+    parent.animation = BEESRIGHT;
+  } else {
+    parent.animation = BEES;
+  }      
+  console.log("BEESPAWN");
   if (player.position.distance(parent.position) < RANGE*TILE) {
+    console.log("in range");
     var speed = Math.round(player.position.distance(parent.position)/TILE/3);
     if (speed < 1) {
       speed = 1;
@@ -48,15 +54,11 @@ function bees(parent) {
     parent.velocity.x = 0;
     parent.velocity.y = 0;
   }
-  if (parent.facing == 1) {
-    parent.animation = BEESRIGHT;
-  } else {
-    parent.animation = BEES;
-  }      
   var hits = parent.collision();
   for (var i=0;i<hits.length;i++) {
     var that = hits[i];
     if (that.name == "bees") {
+      console.log("bb")
       var parentCenter = new vector(parent.position.x+parent.sprite.size.x/2, parent.position.y+parent.sprite.size.y/2);
       var thatCenter = new vector(that.position.x+that.sprite.size.x/2, that.position.y+that.sprite.size.y/2);
       var intersection = new vector((parentCenter.x+thatCenter.x)/2,(parentCenter.y+thatCenter.y)/2);

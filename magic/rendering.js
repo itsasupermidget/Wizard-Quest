@@ -186,7 +186,10 @@ setInterval(function() {
     screen.fillStyle = "white";
     screen.fillRect(canvas.width/2-2*SCALE,19*SCALE,4*SCALE,2*SCALE);    
     drawText("mana",SCREENWIDTH/2+29,5);
-    drawGui(0,160,32,16,SCREENWIDTH/2+24,12); //mana bar    
+    drawGui(0,160,32,16,SCREENWIDTH/2+24,12); //mana bar
+    if (player.mana < 0) {
+      player.mana = 0;
+    }
     drawGui(32,168,player.mana/player.maxMana*24,8,SCREENWIDTH/2+28,16); //mana gauge
     drawGui(96,138,48,22,SCREENWIDTH/2+76,10); //progress bar
     if (DEBUG) {

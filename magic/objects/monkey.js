@@ -1,9 +1,9 @@
 function monkey(parent) {
   const DAMAGE = 7;
   const DEBOUNCE = 10;
-  const KNOCKBACK = 5;
+  const KNOCKBACK = 6;
   const MISTDAMAGE = 4;
-  const MISTKNOCKBACK = 3;
+  const MISTKNOCKBACK = 4;
   const MISTSTUN = 2;
   const SWORDDAMAGE = 3;
   const SWORDKNOCKBACK = 4;

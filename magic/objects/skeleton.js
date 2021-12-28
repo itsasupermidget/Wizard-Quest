@@ -1,25 +1,28 @@
 function skeleton(parent) {
   const DAMAGE = 5;
-  const KNOCKBACK = 8;
+  const KNOCKBACK = 10;
   const DEBOUNCE = 10;
   const MISTDAMAGE = 4;
-  const MISTKNOCKBACK = 3;
+  const MISTKNOCKBACK = 8;
   const MISTSTUN = 4;
   const SWORDDAMAGE = 3;
-  const SWORDKNOCKBACK = 5;
+  const SWORDKNOCKBACK = 7;
   const SWORDSTUN = 5;
   const SHARDDAMAGE = 9;
   const FIREDAMAGE = 2;
-  const FIREKNOCKBACK = 2;
+  const FIREKNOCKBACK = 4;
   const FIRESTUN = 5;
   const SPEED = 2;
-  const RANGE = 8;
+  const RANGE = 12;
   const JUMP = 16;
   var distance = player.position.distance(parent.position);
   if (player.position.x > parent.position.x) {
     parent.facing = 1;
   } else {
     parent.facing = -1;
+  }
+  if (distance < TILE*COMBATRANGE) {
+    player.facing = -parent.facing;
   }
   var goal = 0;
   if (player.position.x != parent.position.x && distance < RANGE*TILE && !parent.flicker) {
@@ -56,6 +59,7 @@ function skeleton(parent) {
         parent.debounce = DEBOUNCE;
         that.hit(DAMAGE);
         that.bounce(parent);
+
       }
       parent.velocity.x = -parent.facing*KNOCKBACK;
     }
@@ -71,11 +75,10 @@ function skeleton(parent) {
         parent.hit(SWORDDAMAGE, SWORDSTUN);
         that.debounce = 10;
       }
-      parent.velocity.x = -parent.facing*SWORDKNOCKBACK;
-      if (parent.canMove(new vector(parent.velocity.x,0))) {
-        parent.position.x += parent.velocity.x;
-      }  
-      parent.gravity = true;
+      if (parent.health > 0) {
+        parent.velocity.x = -parent.facing*SWORDKNOCKBACK;
+        parent.gravity = true;
+      }
     }
     if (that.name == "shard") {
       parent.hit(SHARDDAMAGE);

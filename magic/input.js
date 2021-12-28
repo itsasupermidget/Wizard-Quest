@@ -1,7 +1,7 @@
 var keys = [];
 var keyMemory = [];
 var keyTimes = [];
-var BUTTONATTACKS = false;
+var BUTTONATTACKS = true;
 var TOUCHCONTROLS = false;
 var TOUCHPADCENTER = new vector(TILE*2,SCREENHEIGHT-TILE*2);
 var BUTTONPADCENTER = new vector(SCREENWIDTH-TILE*4,SCREENHEIGHT-TILE*4);
@@ -46,20 +46,22 @@ function startButton() {
       }
       //loadPassword(world+randomPair(0,6)+level+randomPair(0,6)+randomPair(1,99)+randomPair(0,6)+randomPair(10,99)+randomPair(5,99));
       loadPassword(world+"ZW"+level+"ZQ44ZXWZWZ");    
-    } else {
-      if (password.length > 1) {
-        loadPassword(password);
-      } else {
-        loadPassword("ZQZWZWZQ44ZXWZWZ");      
-      }
     }
     paused = false;
     modeSelect = false;        
   } else if (passwordScreen) {
+    modeSelect = 3;
+    passwordScreen = false;
+    menu = 1;    
+    if (password.length == 1) {
+      password = "ZQZWZQZQ44ZXWZWZ"
+    } else if (password.length < 1) {
+      password = "ZWZWZXZQ44ZXWZWZ"
+    }
     if (password.length == 16) {
+      loadPassword(password);
       modeSelect = 3;
-      passwordScreen = false;
-      menu = 1;    }
+    }
   } else if (settings) {
     settings = false;
     title = true;
@@ -206,9 +208,6 @@ document.addEventListener("keyup", function(event) {
   if (key == 83 && !passwordScreen) {
     downButton();
   }
-  if ((key == 87 && !keys.includes(83)) || (key == 83 && !keys.includes(87))) {
-    player.climbing = 0;
-  }
   if (key == 74) {
     password = password.slice(0,password.length-1);
   }
@@ -222,6 +221,15 @@ document.addEventListener("keyup", function(event) {
     keyTimes[keyMemory.indexOf(key)] = 0;
     keys.splice(keys.indexOf(key),1);
   }  
+  if ((key == 87 && player.climbing == -1) || (key == 83 && player.climbing == 1)) {
+    player.climbing = 0;
+    if (keys.includes(87)) {
+      player.climbing = -1;
+    }
+    if (keys.includes(83)) {
+      player.climbing = 1;
+    }
+  }
 });
 
 function touchControls(event, name) {
@@ -240,7 +248,7 @@ function touchControls(event, name) {
         rightButton();
       } else {
         player.walking = 0;
-        player.climbing = 0;
+        //player.climbing = 0;
       }
       if (name == "start") {
         if (touchPos.y < TOUCHPADCENTER.y) {

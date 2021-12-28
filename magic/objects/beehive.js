@@ -11,13 +11,15 @@ function beehive(parent) {
     if (tick%RATE==0) {
       for (var i=0;i<2;i++) {
         if (parent.minions < 2) {
-          var bees = new body(new vector(parent.position.x, parent.position.y), new sprite(new vector(0,0), new vector(0,0)));
+          var bees = new body(new vector(parent.position.x, parent.position.y-i*TILE), new sprite(new vector(0,0), new vector(0,0)));
           bees.name = "bees";
           bees.solid = false;
+          bees.sprite = BEES.sprites[0];
+          bees.owner = parent;
           collisions.push(bees);
           parent.minions += 1;
           enemies += 1;
-          bees.owner = parent;
+          totalEnemies += 1;
           parent.hit(BEEDAMAGE);
         }
       }

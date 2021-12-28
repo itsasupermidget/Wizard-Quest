@@ -2,17 +2,17 @@ function knight(parent) {
   const DAMAGE = 3;
   const KNOCKBACK = 10;
   const MISTDAMAGE = 6;
-  const MISTKNOCKBACK = 4;
+  const MISTKNOCKBACK = 5;
   const MISTSTUN = 4;
   const SWORDDAMAGE = 5;
-  const SWORDKNOCKBACK = 5;
-  const SWORDYKNOCKBACK = 3;
+  const SWORDKNOCKBACK = 7;
+  const SWORDYKNOCKBACK = 6;
   const SWORDSTUN = 4;
   const SHARDDAMAGE = 15;
   const FIREDAMAGE = 5;
   const FIREKNOCKBACK = 2;  
   const FIRESTUN = 3;
-  const RANGE = 12;
+  const RANGE = 10;
   var xDistance = Math.round(player.position.x+player.sprite.size.x/2-(parent.position.x+parent.sprite.size.x/2));
   parent.facing = (xDistance)/Math.max(1,Math.abs(xDistance));
   if (parent.facing == -1) {
@@ -20,24 +20,25 @@ function knight(parent) {
   } else {
     parent.animation = KNIGHTRIGHT;
   }       
-  if (Math.abs(xDistance) < TILE*2.25) {
+  if (Math.abs(xDistance) < TILE*COMBATRANGE) {
     if (parent.facing == -1) {
       parent.animation = KNIGHTATTACK;
     } else {
       parent.animation = KNIGHTATTACKRIGHT;
     }
+    player.facing = -parent.facing;
   }        
   var goal = 0;
   if (player.position.x != parent.position.x && xDistance < RANGE*TILE && Math.abs(xDistance) > player.sprite.size.x/2 && !parent.flicker) {
-    var speed = Math.ceil((Math.abs(xDistance)+TILE)/TILE/4)+1;
+    var speed = Math.round((Math.abs(xDistance)+TILE)/TILE/4)+1;
     if (speed < 1) {
       speed = 1;
     }
-    if (speed > 4) {
-      speed = 4;
+    if (speed > 5) {
+      speed = 5;
     }
     if ((parent.animation == KNIGHTATTACK || parent.animation == KNIGHTATTACKRIGHT) && parent.animation.current > parent.animation.order.length/2) {
-      speed = 6;
+      speed = 7;
     }
     goal = speed*parent.facing;
   }
@@ -65,6 +66,8 @@ function knight(parent) {
         parent.debounce = KNIGHTATTACK.order.length;
       }
       that.bounce(parent);
+      that.velocity.x = parent.facing*KNOCKBACK;
+      that.velocity.y = -SWORDYKNOCKBACK;
       parent.velocity.x = -parent.facing*KNOCKBACK;
     }
     if (that.name == "mist") {
@@ -77,7 +80,7 @@ function knight(parent) {
       parent.hit(SWORDDAMAGE, SWORDSTUN);
       that.debounce = 10;
       parent.velocity.x = -parent.facing*SWORDKNOCKBACK;
-      parent.velocity.y = SWORDYKNOCKBACK;
+      parent.velocity.y = -SWORDYKNOCKBACK;
     }
     if (that.name == "shard") {
       parent.hit(SHARDDAMAGE);
