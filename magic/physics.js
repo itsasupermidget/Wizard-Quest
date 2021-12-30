@@ -407,7 +407,7 @@ function body(position,s) {
         }      
       }
       if (this.name == "timer") {
-        var frame = Math.floor((tick%240)/80)+1;
+        var frame = Math.floor((tick%480)/160)+1;
         this.visible = this.health == frame || this.health == 1 && frame == 2 || this.health == 2 && frame == 3 || this.health == 3 && frame == 1;
         this.solid = this.visible;
         var hits = this.collision();
