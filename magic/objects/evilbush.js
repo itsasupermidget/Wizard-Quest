@@ -18,6 +18,10 @@ function evilBush(parent) {
     } else {
       parent.facing = 1;
     }
+    if (parent.canMove(new vector(0,1))) {
+      parent.position.x -= parent.velocity.x;
+      parent.velocity.x = 0;
+    }
     if (!parent.canMove(new vector(parent.facing*TILE,TILE)) && parent.animation.current > 9) {
       var goal = parent.facing*SPEED;
       if (parent.velocity.x != goal) {

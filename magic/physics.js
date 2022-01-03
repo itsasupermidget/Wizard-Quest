@@ -144,10 +144,10 @@ function body(position,s) {
           }
         }
         if (this.name == "beehive" && this.animation != BROKENBEEHIVE) {
-          this.name = "bees";
-          this.animation = BEES;
+          this.animation = BROKENBEEHIVE;
           this.animation.start = tick;
-          this.health = 100;
+          this.animation.current = 0;
+          this.gravity = true;
         }
         if (this.name == "warrior") {
           if (this.animation != WARRIORDIE && this.animation != WARRIORDIELEFT) {
@@ -196,7 +196,7 @@ function body(position,s) {
               this.parent.children.splice(this.parent.children.indexOf(this),1);
             }
           }
-          if (this.name == "skeleton" || this.name == "knight" || this.name == "bees" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey") {
+          if ((this.name == "skeleton" || this.name == "knight" || this.name == "bees" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey") && this.health < 1) {
             enemies -= 1;
             key.position = new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2);
             if (this.owner) {
@@ -527,7 +527,8 @@ function body(position,s) {
       if (this.name == "beehive" && this.health > 0) {
         beehive(this);
       }
-      if (this.name == "bees" && this.health > 0) {
+      if (this.name == "bees") {
+        console.log(this.health, this.position.y)
         bees(this);
       }
       if (this.name == "plant" && this.health > 0) {
