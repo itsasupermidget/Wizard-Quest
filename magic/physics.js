@@ -73,6 +73,11 @@ function body(position,s) {
   this.render = function(fromParent) {
     if (this.visible || (this.parent && this.parent.children.includes(this)) && fromParent) {
       screen.drawImage(SPRITES,this.sprite.position.x,this.sprite.position.y,this.sprite.size.x,this.sprite.size.y,(this.position.x-camera.x+this.sprite.offset.x)*SCALE,(this.position.y-camera.y+this.sprite.offset.y)*SCALE,this.sprite.size.x*SCALE,this.sprite.size.y*SCALE); //RENDER
+      if (this.children.length > 0) {
+        for (var i=0;i<this.children.length;i++) {
+          this.children[i].render(true);
+        }
+      }
       if (DEBUG) {
         screen.beginPath();
         screen.lineWidth = "2";
@@ -722,6 +727,7 @@ function body(position,s) {
         } else {
           child.play(true);
         }
+        child.render(true);
       }
       this.render(fromParent);
       if (this.hitTimer > 0 && this.lastHit > 0) {
