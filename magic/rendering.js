@@ -119,6 +119,7 @@ function loop(stamp) {
       screen.fillStyle = "rgba(104,136,252,255)";
     }
     screen.fillRect(0,0,canvas.width,canvas.height); //background color
+    screen.translate(-TILE*SCALE,0);
     if (!paused && !loading) {
       if (!boss && camera) {
         for (var y=0;y<map.height;y++) {
@@ -128,20 +129,20 @@ function loop(stamp) {
               iY = y
               if (y > 11) {
                 if (y > map.height-12) {
-                  drawGui(80,48,TILE,TILE,x*TILE-camera.x,y*TILE-camera.y);       
+                  drawGui(80,48,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);       
                   if (y > map.height-6) {
-                    drawGui(80,56,TILE,TILE/2,x*TILE-camera.x,y*TILE-camera.y);
+                    drawGui(80,56,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE-camera.y);
                   }
                 } else {
-                  drawGui(80,48,TILE,TILE/2,x*TILE-camera.x,y*TILE-camera.y);
-                  drawGui(80,48,TILE,TILE/2,x*TILE-camera.x,y*TILE+8-camera.y);              
+                  drawGui(80,48,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE-camera.y);
+                  drawGui(80,48,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);              
                 }
               } else {
-                drawGui(0,600,TILE,TILE/2,x*TILE-camera.x,y*TILE-camera.y);
-                drawGui(0,600,TILE,TILE/2,x*TILE-camera.x,y*TILE+8-camera.y);
+                drawGui(0,600,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE-camera.y);
+                drawGui(0,600,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
               }
               if (y == 10) {
-                drawGui(80,48,TILE,TILE/2,x*TILE-camera.x,y*TILE+8-camera.y);
+                drawGui(80,48,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
               }            
               y = iY
             } else {
@@ -158,9 +159,9 @@ function loop(stamp) {
               var height = Math.round((6-x%10)/3)+backgroundLevel;
               if (y >= height) {
                 if (y == height) {
-                  drawGui(112,808,TILE,TILE,x*TILE-camera.x,y*TILE-camera.y); //grass
+                  drawGui(112,808,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y); //grass
                 } else {
-                  drawGui(128,808,TILE,TILE,x*TILE-camera.x,y*TILE-camera.y); //dirt
+                  drawGui(128,808,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y); //dirt
                 }
               }
             }
@@ -168,6 +169,7 @@ function loop(stamp) {
           }
         }
       }
+      screen.translate(TILE*SCALE,0);      
       for (var i=0;i<collisions.length;i++) {
         if (collisions[i] && collisions[i] != player) {
           collisions[i].play(); //run physics/rendering

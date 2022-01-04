@@ -1,6 +1,8 @@
 function generateLevel(stage) {
   player.visible = false;
   var respawning = true;
+  screen.fillStyle = "rgba(1,2,3,255)";
+  screen.fillRect(0,0,canvas.width,canvas.height);
   map = new Image();
   map.src = "magic/levels/"+stage.x+","+stage.y+".png";
   collisions = [];
@@ -19,8 +21,6 @@ function generateLevel(stage) {
   }
   cameraReset = true;
   loading = true;
-  screen.fillStyle = "rgba(1,2,3,255)";
-  screen.fillRect(0,0,canvas.width,canvas.height);
   map.onload = function(){
     canvas.width = map.width;
     canvas.height = map.height;

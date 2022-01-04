@@ -1,9 +1,9 @@
 function skeleboss(parent) {
   const KNOCKBACK = 6;
-  const MISTDAMAGE = 32;
-  const SWORDDAMAGE = 20;
+  const MISTDAMAGE = 24;
+  const SWORDDAMAGE = 15;
   const SHARDDAMAGE = 60;
-  const FIREDAMAGE = 20;
+  const FIREDAMAGE = 12;
   const RANGE = 14;
   if (parent.position.distance(player.position) < RANGE*TILE) {
     var phase1 = (parent.health <= 50);
