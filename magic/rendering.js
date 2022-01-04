@@ -267,6 +267,7 @@ function loop(stamp) {
       }
       tick++;
     } else if (!loading) {
+      screen.translate(TILE*SCALE,0);
       drawGui(0,528,144,56,-1,24); //logo
       if (title) {
         drawText("press start",-1,96);
