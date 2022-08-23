@@ -64,7 +64,7 @@ function playerScript(parent) {
           attack.fizzles = true;
           attack.solid = false;
           attack.name = "mist";
-          attack.velocity.x = parent.walking*2 + parent.animationFacing*4;
+          attack.velocity.x = parent.walking*5 + parent.animationFacing*6;
           parent.chargeLevel = Math.min(parent.chargeLevel, 12);
           if (parent.chargeLevel > 2) {
             parent.chargeLevel -= 2;

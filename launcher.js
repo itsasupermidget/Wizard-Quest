@@ -29,6 +29,7 @@ var LOADORDER = [
 "objects/warrior.js",
 "objects/evilbush.js",
 "objects/monkey.js",
+"objects/cactus.js",
 "player.js",
 "input.js",
 "rendering.js",

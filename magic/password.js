@@ -50,5 +50,9 @@ function loadPassword(password) {
   player.health = ((doubles[4]+1)/100)*player.maxHealth;
   player.maxMana = doubles[7]*10;
   player.mana = player.maxMana/2;
-  generateLevel(new vector(doubles[0], doubles[2]));
+  if (doubles[0] == 50 && doubles[2] == 2) {
+    generateLevel(new vector(-1,0));
+  } else {
+    generateLevel(new vector(doubles[0], doubles[2]));
+  }
 }

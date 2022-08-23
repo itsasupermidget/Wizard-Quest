@@ -1,7 +1,7 @@
 var keys = [];
 var keyMemory = [];
 var keyTimes = [];
-var BUTTONATTACKS = true;
+var BUTTONATTACKS = false;
 var TOUCHCONTROLS = false;
 var TOUCHPADCENTER = new vector(TILE*2,SCREENHEIGHT-TILE*2);
 var BUTTONPADCENTER = new vector(SCREENWIDTH-TILE*4,SCREENHEIGHT-TILE*4);
@@ -54,9 +54,10 @@ function startButton() {
     passwordScreen = false;
     menu = 1;    
     if (password.length == 1) {
-      password = "ZQZWZQZQ44ZXWZWZ"
+      password = "ZQZWZQZQ44ZXWZWZ";
     } else if (password.length < 1) {
-      password = "ZWZWZXZQ44ZXWZWZ"
+      level = new vector(0,1);
+      loadPassword("ZZZWZWZQ44ZXWZWZ");
     }
     if (password.length == 16) {
       loadPassword(password);
@@ -288,3 +289,108 @@ function touchControls(event, name) {
 document.addEventListener("touchstart", function() {touchControls(event, "start")});
 document.addEventListener("touchmove", function() {touchControls(event, "move")});
 document.addEventListener("touchend", function() {touchControls(event, "end")});
+//PRO CONTROLLER SUPPORT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+var con = false;
+function delKey(id) {
+  if (keys.includes(id)) {
+    keyTimes[keyMemory.indexOf(id)] = 0;
+    keys.splice(keys.indexOf(id),1);
+  } 
+}
+function pro() {
+  var con = navigator.getGamepads()[0];
+  if (con) { //12 13 14 15
+    if (con.axes) {
+      var lr = Math.round(con.axes[0]*2)/2;
+      var ud = Math.round(con.axes[1]*2)/2;
+    }
+    if (con.buttons[0].pressed) { //B
+      player.jumping = true;
+      keys.push(75);
+      keyTimes.push(0);
+    }
+    if (con.buttons[2].pressed) { //Y
+      player.charging = true;
+      keys.push(74);
+      keyTimes.push(0);
+    }
+    if (keys.includes(75) && (!con.buttons[0].pressed)) { //B up
+      jumpRelease();
+      delKey(75);
+    }
+    if (keys.includes(74) && (!con.buttons[2].pressed)) { //Y up
+      mistAttack(player);
+      password = password.slice(0,password.length-1);
+      delKey(74);
+    }
+    if (con.buttons[12].pressed || ud == -1) { //Up
+      player.climbing = -1;
+      keys.push(87);
+      keyTimes.push(0);
+    }
+    if (con.buttons[13].pressed || ud == 1) { //Down
+      player.climbing = 1;
+      keys.push(83);
+      keyTimes.push(0);
+    }
+    if (!con.buttons[12].pressed && keys.includes(87)) { //Up release
+      delKey(87);
+      if (!passwordScreen) {
+        upButton();
+      }
+    }
+    if (!con.buttons[13].pressed && keys.includes(83)) { //Down release
+      delKey(83);
+      if (!passwordScreen) {
+        downButton();
+      }      
+    }    
+    if (keys.includes(65) && !keys.includes(68) && (!con.buttons[14].pressed) || lr == 0) { //Left up
+      delKey(65);
+      if (passwordScreen) {
+        if (menu == 0) {
+          menu = 9;
+        } else {
+          menu -= 1;
+        }
+      }
+    }
+    if (keys.includes(68) && !keys.includes(65) && (!con.buttons[15].pressed) || lr == 0) { //Right up
+      delKey(68);
+      if (passwordScreen) {
+        if (menu == 9) {
+          menu = 0;
+        } else {
+          menu += 1;
+        }
+      }
+    } 
+    if (con.buttons[14].pressed || lr == -1) { //Left
+      leftButton();
+      keys.push(65);
+      keyTimes.push(0);
+    } else if (con.buttons[15].pressed || lr == 1) { //Right
+      rightButton();
+      keys.push(68);
+      keyTimes.push(0);
+    } else {
+      player.walking = 0;
+    }
+    if (con.buttons[3].pressed) { //X
+      swingSword(player);
+    }
+    if (con.buttons[1].pressed) { //A
+      swingStaff(player);
+
+    }
+    if (con.buttons[9].pressed && !keys.includes(13)) {
+      keys.push(13);
+      keyTimes.push(0);
+    } else if (!con.buttons[9].pressed && keys.includes(13)) { //release start
+      delKey(13);
+      startButton();
+    }    
+    console.log(con.buttons[9]); //+9 -8 ZR7 ZL6 R5 L4 
+  }
+  return true;
+}

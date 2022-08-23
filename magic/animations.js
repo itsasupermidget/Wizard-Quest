@@ -153,7 +153,7 @@ var MIST = new animation(
     new sprite(new vector(112,0), new vector(16,16)),
     new sprite(new vector(128,0), new vector(16,16)),        
   ],
-  [0,0,1,1,1,2,2,2,2,3,3,3,0,0]
+  [0,0,1,1,1,2,2,2,3,3,0]
 );
 var MISTLEFT = new animation(
   [new sprite(new vector(80,24), new vector(16,16)),
@@ -161,7 +161,7 @@ var MISTLEFT = new animation(
     new sprite(new vector(112,24), new vector(16,16)),
     new sprite(new vector(128,24), new vector(16,16)),        
   ],
-  [0,0,1,1,1,2,2,2,2,3,3,3,0,0]
+  [0,0,1,1,1,2,2,2,3,3,0]
 );
 var FIRE = new animation(
   [new sprite(new vector(80,16), new vector(8,8)),
@@ -370,3 +370,19 @@ var MONKEYDIELEFT = new animation([
   new sprite(new vector(64,832), new vector(16,16)),
   new sprite(new vector(80,832), new vector(16,16)),
 ], [0,0,1,1], 3);
+var CACTUS = new animation([
+  new sprite(new vector(0,912), new vector(16,32)),
+  new sprite(new vector(16,912), new vector(16,32)),
+  new sprite(new vector(32,912), new vector(16,32)),
+  new sprite(new vector(48,912), new vector(16,32)),
+  new sprite(new vector(64,912), new vector(16,32)),
+], [0,1,2,3,4,3,2,1], 2);
+var CACTUSATTACK = new animation([
+  new sprite(new vector(80,912), new vector(16,32)),
+  new sprite(new vector(104,912), new vector(16,32)),  
+  new sprite(new vector(896,912), new vector(16,32)),
+], [0,1,2,3,4,3,2,1], 2);
+var TUMBLEWEED = new animation([
+  new sprite(new vector(80,912), new vector(16,16)),
+  new sprite(new vector(104,912), new vector(16,16)),  
+], [0,1,2,3,4,3,2,1], 2);

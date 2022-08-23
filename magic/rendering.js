@@ -1,4 +1,5 @@
 var cameraReset = false;
+var TOUCHCONTROLS = false;
 function drawGui(sX,sY,w,h,x,y,width,height) {
   if (x == -1) {
     x = SCREENWIDTH/2-w/2;
@@ -107,6 +108,9 @@ var lastFrame;
 var lastStamp = 0;
 function loop(stamp) {
   if (Math.abs(lastStamp-stamp) >= 1000/FPS) {
+    if (pro) {
+      pro() //pro controller
+    }
     canvas.width = SCREENWIDTH*SCALE;
     canvas.height = SCREENHEIGHT*SCALE;
     canvas.style.position = "absolute";
@@ -141,7 +145,7 @@ function loop(stamp) {
                 drawGui(0,600,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE-camera.y);
                 drawGui(0,600,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
               }
-              if (y == 10) {
+              if (y == 10 || y % 3 == 0) {
                 drawGui(80,48,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
               }            
               y = iY

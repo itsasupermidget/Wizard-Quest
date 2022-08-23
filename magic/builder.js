@@ -1,10 +1,15 @@
 function generateLevel(stage) {
   player.visible = false;
   var respawning = true;
+  var random = ((level.x == 0 && level.y == 1) || level.x == null);
   screen.fillStyle = "rgba(1,2,3,255)";
   screen.fillRect(0,0,canvas.width,canvas.height);
   map = new Image();
-  map.src = "magic/levels/"+stage.x+","+stage.y+".png";
+  if (!random) {
+    map.src = "magic/levels/"+stage.x+","+stage.y+".png";
+  } else {
+    map.src = "magic/levels/0,1.png";
+  }
   collisions = [];
   enemies = 0;
   totalEnemies = 0;
@@ -29,7 +34,68 @@ function generateLevel(stage) {
     screen.drawImage(map,0,0,map.width,map.height);
     WIDTH = map.width*SCALE*TILE;
     HEIGHT = map.height*SCALE*TILE;
-    for (var y=0;y<canvas.height;y++) {
+    if (random) { //generate random stage
+      var jumpRate = 10;
+      var layers = 8;
+      var ladderRate = 22;
+      var skeletonRate = 12;
+      var doubleSkelly = 5;
+      var gap = 0;
+      var spikes = false;
+      function fillBlock(r,g,b,x,y) {
+        screen.fillStyle = "rgba("+r+","+g+","+b+",255)";
+        screen.fillRect(x,y,1,1);        
+      }
+      for (var x=0; x<canvas.width; x++) {
+        if (x % jumpRate == 0) {
+          if (Math.random()*10 < 5) {
+            gap = Math.random()*3+2; //generate gap length
+          } else {
+            gap = 0; //spikes
+          }
+        }
+        for (var z=0; z<canvas.height/layers; z++) {
+          var height = z*(canvas.height/layers);
+          spikes = false;
+          if (x % jumpRate == 0) {
+            if (gap == 0) {
+              fillBlock(255,255,255,x,3+height); //spikes
+              spikes = true;
+            }
+          }
+          if (x % ladderRate == 0) {
+            for (var y=0; y<canvas.height/layers; y++) {
+              fillBlock(128,128,255,x,y+height); //ladder                 
+            }
+          }
+          if (gap < 1 || spikes) {
+            var color = [0,0,0];
+            if (Math.round(Math.random()*2) == 0 || spikes) {
+              color = [0,128,0];
+            }
+            if (Math.round(Math.random()*3) != 0 || spikes) {
+              var tall = Math.round(Math.random()*5);
+              fillBlock(color[0],color[1],color[2],x,4+height); //ground
+              for (var t=0; t<tall; t++) {
+                if (color[1] == 0) {
+                  fillBlock(color[0],color[1],color[2],x,4+height+t-3); //tall ground
+                }
+              }
+            }
+            if (Math.round(Math.random()*skeletonRate) == 0) {
+              fillBlock(255,255,0,x,3+height);
+              if (Math.round(Math.random()*doubleSkelly) == 0) {
+                fillBlock(255,255,0,x-1,3+height);                
+              }
+            }
+          }
+        }
+        if (gap > 0) {
+          gap -= 1;
+        }
+      }
+    }
+    for (var y=0; y<canvas.height; y++) {
       for (var x=0;x<canvas.width;x++) {
         var pixel = screen.getImageData(x,y,1,1).data;
         var r = pixel[0];
@@ -39,6 +105,9 @@ function generateLevel(stage) {
         if (r == 0 && g == 0 && b == 0) {
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(64,48), new vector(16,16))));
         }
+        if (r == 255 && g == 255 && b == 204) {
+          collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(0,896), new vector(16,16))));
+        }        
         if (r == 0 && g == 255 && b == 0 && respawning == false) {
           spawn = new vector(x*TILE,y*TILE-9);
           player.position.x = spawn.x;
@@ -54,6 +123,26 @@ function generateLevel(stage) {
           enemies += 1;
           totalEnemies += 1;
         }
+        if (r == 170 && g == 0 && b == 0) {
+          var tumble = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));
+          tumble.name = "tumble";
+          tumble.gravity = true;
+          tumble.solid = false;
+          tumble.animation = TUMBLEWEED;
+          collisions.push(tumble);
+          enemies += 1;
+          totalEnemies += 1;
+        }        
+        if (r == 0 && g == 170 && b == 0) {
+          var cactus = new body(new vector(x*TILE,y*TILE-TILE),new sprite(new vector(0,0), new vector(16,32)));
+          cactus.name = "cactus";
+          cactus.gravity = true;
+          cactus.solid = false;
+          cactus.animation = cactus;
+          collisions.push(cactus);
+          enemies += 1;
+          totalEnemies += 1;
+        }        
         if (r == 255 && g == 255 && b == 255) {
           var spikes = new body(new vector(x*TILE,y*TILE), new sprite(new vector(128,48), new vector(16,16)));
           spikes.name = "spikes";
@@ -191,7 +280,7 @@ function generateLevel(stage) {
           enemies += 1;
           totalEnemies += 1;          
         }
-        if (r == 0 && g == 128 && b == 0) {
+        if (r == 0 && g == 128 && b == 0) { //grass
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(0,648), new vector(16,16))));
         }      
         if (r == 64 && g == 32 && b == 0) {

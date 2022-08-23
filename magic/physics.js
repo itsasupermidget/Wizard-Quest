@@ -1,4 +1,5 @@
- function vector(x,y) {
+
+function vector(x,y) {
   this.x = x;
   this.y = y;
   this.add = function(that) {
@@ -71,8 +72,10 @@ function body(position,s) {
     return thisClone;
   }
   this.render = function(fromParent) {
-    if (this.visible || (this.parent && this.parent.children.includes(this)) && fromParent) {
-      screen.drawImage(SPRITES,this.sprite.position.x,this.sprite.position.y,this.sprite.size.x,this.sprite.size.y,(this.position.x-camera.x+this.sprite.offset.x)*SCALE,(this.position.y-camera.y+this.sprite.offset.y)*SCALE,this.sprite.size.x*SCALE,this.sprite.size.y*SCALE); //RENDER
+    var sp = this.sprite;
+    var pos = this.position;
+    if (sp !== undefined && pos !== undefined && (this.visible || (this.parent && this.parent.children.includes(this)) && fromParent)) {
+      screen.drawImage(SPRITES,sp.position.x,sp.position.y,sp.size.x,sp.size.y,(pos.x-camera.x+sp.offset.x)*SCALE,(pos.y-camera.y+sp.offset.y)*SCALE,sp.size.x*SCALE,sp.size.y*SCALE); //RENDER
       if (this.children.length > 0) {
         for (var i=0;i<this.children.length;i++) {
           this.children[i].render(true);
@@ -113,11 +116,13 @@ function body(position,s) {
           this.mana = this.maxMana*respawnPercent;
         }
       } else {
-        var heart = new body(new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2), new sprite(new vector(0,128), new vector(8,8)));
-        heart.name = "heart";
-        heart.velocity = new vector(0,-6);
-        heart.gravity = true;
-        heart.solid = false;
+        if (this.sprite && this.sprite.size) {
+          var heart = new body(new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2), new sprite(new vector(0,128), new vector(8,8)));
+          heart.name = "heart";
+          heart.velocity = new vector(0,-6);
+          heart.gravity = true;
+          heart.solid = false;
+        }
         if (this.name == "skeleton") {
           if (this.animation != SKELETONDIE) {
             this.animation = SKELETONDIE;
@@ -386,7 +391,10 @@ function body(position,s) {
       }
       if (this.name == "knight" && this.health > 0) {
         knight(this);
-      }    
+      }
+      if (this.name == "cactus" && this.health > 0) {
+        cactus(this);
+      }          
       if (this.name == "heart" && this.health > 0) {
         var hits = this.collision();
         this.visible = true;
@@ -743,7 +751,7 @@ function body(position,s) {
     var hits = [];
     for (var i=0;i<collisions.length;i++) {
       var b = collisions[i];
-      if (b) {
+      if (b && b.sprite && this.sprite && this.sprite.size) {
         var pos = this.position;
         var bpos = b.position;
         var size = this.sprite.size;
