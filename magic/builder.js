@@ -1,7 +1,9 @@
 function generateLevel(stage) {
   player.visible = false;
   var respawning = true;
-  var random = ((level.x == 0 && level.y == 1) || level.x == null);
+  console.log(stage);
+  console.log("level::"+level.x+level.y);
+  var random = ((level.x == 0 && level.y > 0) || (level.x == null && stage.x == 0));
   screen.fillStyle = "rgba(1,2,3,255)";
   screen.fillRect(0,0,canvas.width,canvas.height);
   map = new Image();
@@ -38,8 +40,16 @@ function generateLevel(stage) {
       var jumpRate = 10;
       var layers = 8;
       var ladderRate = 22;
-      var skeletonRate = 12;
+      var platformRate = 4;
+      var heartRate = 6;      
+      var skeletonRate = 14;
       var doubleSkelly = 5;
+      var knightRate = 32;
+      var monkeyRate = 8;
+      var plantRate = 18;
+      var hiveRate = 24;
+      var warriorRate = 6;
+      var bushRate = 16;
       var gap = 0;
       var spikes = false;
       function fillBlock(r,g,b,x,y) {
@@ -63,29 +73,78 @@ function generateLevel(stage) {
               spikes = true;
             }
           }
-          if (x % ladderRate == 0) {
+          if ((x+4) % ladderRate == 0) {
             for (var y=0; y<canvas.height/layers; y++) {
-              fillBlock(128,128,255,x,y+height); //ladder                 
+              fillBlock(128,128,255,x+4,y+height); //ladder
             }
           }
           if (gap < 1 || spikes) {
-            var color = [0,0,0];
-            if (Math.round(Math.random()*2) == 0 || spikes) {
-              color = [0,128,0];
+            var color = [0,0,0]; //bricks
+            if (Math.round(Math.random()*2) == 0) {
+              var stairset = Math.round(Math.random()*4)+126; //stairs
+              color = [stairset,stairset,stairset];
             }
-            if (Math.round(Math.random()*3) != 0 || spikes) {
+            if (Math.round(Math.random()*2) == 0 || spikes) {
+              color = [0,128,0]; //grass
+              if (Math.round(Math.random()*plantRate) == 0 && gap == 0) {
+                fillBlock(0,64,0,x,3+height); //plant
+              }
+              if (Math.round(Math.random()*bushRate) == 0 && gap == 0) {
+                fillBlock(0,200,0,x,3+height); //bush
+              }
+              if (Math.round(Math.random()*bushRate) == 0 && gap == 0) {
+                fillBlock(64,200,0,x,3+height); //evil bush
+              }              
+              if (Math.round(Math.random()*hiveRate) == 0 && gap == 0) {
+                fillBlock(255,128,128,x,5+height); //hive
+              }              
+            }
+            if (Math.round(Math.random()*5) != 0 || spikes) {
               var tall = Math.round(Math.random()*5);
               fillBlock(color[0],color[1],color[2],x,4+height); //ground
               for (var t=0; t<tall; t++) {
                 if (color[1] == 0) {
+                  if (Math.round(Math.random()*platformRate) == 0) {
+                    color = [128,128,255]; //ladder
+                  }
+                  if (Math.round(Math.random()*platformRate) == 0) {
+                    color = [128,128,Math.round(Math.random())*64]; //platform
+                  }
+                  if (Math.round(Math.random()*2) == 0) {
+                    var stairset = Math.round(Math.random()*4)+126; //stairs
+                    color = [stairset,stairset,stairset];
+                  }
                   fillBlock(color[0],color[1],color[2],x,4+height+t-3); //tall ground
                 }
               }
             }
+            if (Math.round(Math.random()*knightRate) == 0) {
+              if (Math.round(Math.random()*warriorRate) == 0) {
+                fillBlock(128,64,64,x,height); //warrior
+              } else {
+                fillBlock(0,0,255,x,height); //knight
+              }
+            }
             if (Math.round(Math.random()*skeletonRate) == 0) {
-              fillBlock(255,255,0,x,3+height);
+              fillBlock(255,255,0,x,3+height); //skeleton
               if (Math.round(Math.random()*doubleSkelly) == 0) {
-                fillBlock(255,255,0,x-1,3+height);                
+                fillBlock(255,255,0,x-1,3+height); //double skeleton         
+              }
+            }
+          } else {
+            if (Math.round(Math.random()*heartRate) == 0) {
+              fillBlock(255,0,255,x*Math.round(Math.random()*3)-2,y+height-1); //heart
+            }
+            if (Math.round(Math.random()*platformRate) == 0) {
+              fillBlock(128,128,Math.round(Math.random())*64,x,y+height); //platform
+              if (Math.round(Math.random()*2) == 0) {
+                fillBlock(128,128,0,x-1,y+height); //platform
+              }
+              if (Math.round(Math.random()*2) == 0) {
+                fillBlock(128,128,0,x+1,y+height); //platform
+              }              
+              if (Math.round(Math.random()*monkeyRate) == 0) {
+                fillBlock(128,64,Math.round(Math.random())*16+16,x,y+height); //monkey
               }
             }
           }
@@ -94,6 +153,8 @@ function generateLevel(stage) {
           gap -= 1;
         }
       }
+      fillBlock(0,255,0,7,33); //spawn
+      fillBlock(255,128,0,6,32); //exit      
     }
     for (var y=0; y<canvas.height; y++) {
       for (var x=0;x<canvas.width;x++) {

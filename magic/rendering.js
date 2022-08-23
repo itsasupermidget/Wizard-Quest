@@ -129,7 +129,7 @@ function loop(stamp) {
         for (var y=0;y<map.height;y++) {
           for (var x=0;x<map.width;x++) {
           if (x*TILE <= camera.x+SCREENWIDTH-TILE/2 && x*TILE >= camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
-            if (level.x == 1) { //w1 background
+            if (level.x == 1 || (level.x == 0 && level.y % 2 == 0)) { //w1 background
               iY = y
               if (y > 11) {
                 if (y > map.height-12) {

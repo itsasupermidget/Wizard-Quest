@@ -21,7 +21,8 @@ function skeleton(parent) {
   } else {
     parent.facing = -1;
   }
-  if (distance < TILE*COMBATRANGE) {
+  if (distance < TILE*COMBATRANGE && COMBATHP <= distance) {
+    COMBATHP = distance;
     player.facing = -parent.facing;
   }
   var goal = 0;

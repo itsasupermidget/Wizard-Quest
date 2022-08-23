@@ -20,7 +20,8 @@ function knight(parent) {
   } else {
     parent.animation = KNIGHTRIGHT;
   }       
-  if (Math.abs(xDistance) < TILE*COMBATRANGE) {
+  if (Math.abs(xDistance) < TILE*COMBATRANGE && COMBATHP <= xDistance) {
+    COMBATHP = Math.abs(xDistance);
     if (parent.facing == -1) {
       parent.animation = KNIGHTATTACK;
     } else {

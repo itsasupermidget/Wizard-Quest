@@ -14,6 +14,7 @@ var HITSTUN = 12;
 var COYOTETIME = 4;
 var DEBUG = false;
 const COMBATRANGE = 4;
+var COMBATHP = 0;
 var tick = 0;
 var difficultyGoal = .5;
 var collisions = [];

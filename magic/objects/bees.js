@@ -63,14 +63,18 @@ function bees(parent) {
   var hits = parent.collision();
   for (var i=0;i<hits.length;i++) {
     var that = hits[i];
-    if (that.name == "bees" && parent.sprite && that.sprite) {
+    if (that.name == "bees" || that.solid && parent.sprite && that.sprite) {
       var parentCenter = new vector(parent.position.x+parent.sprite.size.x/2, parent.position.y+parent.sprite.size.y/2);
       var thatCenter = new vector(that.position.x+that.sprite.size.x/2, that.position.y+that.sprite.size.y/2);
       var intersection = new vector((parentCenter.x+thatCenter.x)/2,(parentCenter.y+thatCenter.y)/2);
       parent.velocity.x += (parent.position.x-intersection.x)/4;
       parent.velocity.y += (parent.position.y-intersection.y)/4;
-      that.velocity.x += (that.position.x-intersection.x)/16;
-      that.velocity.y += (that.position.y-intersection.y)/16;
+      if (!that.solid) {
+        that.velocity.x += (that.position.x-intersection.x)/16;
+        that.velocity.y += (that.position.y-intersection.y)/16;
+      } else {
+        parent.position.add(parent.velocity);
+      }
     }
     if (that.name == "player" && parent.debounce == 0) {
       that.hit(DAMAGE);

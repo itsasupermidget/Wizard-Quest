@@ -541,7 +541,6 @@ function body(position,s) {
         beehive(this);
       }
       if (this.name == "bees") {
-        console.log(this.health, this.position.y)
         bees(this);
       }
       if (this.name == "plant" && this.health > 0) {
@@ -683,9 +682,7 @@ function body(position,s) {
         var side = SCREENWIDTH/2-player.sprite.size.x/2;
         var top = SCREENHEIGHT/2;
         var goal = new vector(player.position.x-side, player.position.y-top);
-        if (Math.abs(goal.x-camera.x) > TILE) {
-          camera.x += Math.max(1, Math.abs(player.velocity.x))*(goal.x-camera.x)/Math.abs(goal.x-camera.x);
-        }
+        camera.x += goal.x-camera.x;
         camera.y = goal.y;
         if (cameraReset) {
           console.log(goal.x, camera.x)
