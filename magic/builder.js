@@ -40,7 +40,7 @@ function generateLevel(stage) {
       var jumpRate = 10;
       var layers = 8;
       var ladderRate = 22;
-      var platformRate = 4;
+      var platformRate = 3;
       var heartRate = 6;      
       var skeletonRate = 14;
       var doubleSkelly = 5;
@@ -69,11 +69,13 @@ function generateLevel(stage) {
           spikes = false;
           if (x % jumpRate == 0) {
             if (gap == 0) {
-              fillBlock(255,255,255,x,3+height); //spikes
-              spikes = true;
+              if (Math.round(Math.random()) == 0) {
+                fillBlock(255,255,255,x,3+height); //spikes
+                spikes = true;
+              }
             }
           }
-          if ((x+4) % ladderRate == 0) {
+          if ((x) % ladderRate == 0) {
             for (var y=0; y<canvas.height/layers; y++) {
               fillBlock(128,128,255,x+4,y+height); //ladder
             }
@@ -136,12 +138,12 @@ function generateLevel(stage) {
               fillBlock(255,0,255,x*Math.round(Math.random()*3)-2,y+height-1); //heart
             }
             if (Math.round(Math.random()*platformRate) == 0) {
-              fillBlock(128,128,Math.round(Math.random())*64,x,y+height); //platform
+              fillBlock(128,128,Math.round(Math.random())*64,x,y+height-2); //platform
               if (Math.round(Math.random()*2) == 0) {
-                fillBlock(128,128,0,x-1,y+height); //platform
+                fillBlock(128,128,0,x-1,y+height-2); //platform
               }
               if (Math.round(Math.random()*2) == 0) {
-                fillBlock(128,128,0,x+1,y+height); //platform
+                fillBlock(128,128,0,x+1,y+height-2); //platform
               }              
               if (Math.round(Math.random()*monkeyRate) == 0) {
                 fillBlock(128,64,Math.round(Math.random())*16+16,x,y+height); //monkey

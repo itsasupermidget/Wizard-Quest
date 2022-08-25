@@ -385,8 +385,8 @@ function mistAttack(parent) {
 function playerJump(parent) {
   if (parent.jumps > 0) {
     playSound("jump");
-    var maxJump = 4;
-    var minJump = maxJump*.6;
+    var maxJump = 5;
+    var minJump = maxJump*.4;
     parent.velocity.y = -Math.round(JUMPPOWER*(Math.max(minJump,parent.jumpCharge)/maxJump));
     parent.jumpCharge = 0;
     parent.freefall = true;
