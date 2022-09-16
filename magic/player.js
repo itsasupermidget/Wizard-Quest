@@ -386,7 +386,7 @@ function playerJump(parent) {
   if (parent.jumps > 0) {
     playSound("jump");
     var maxJump = 3; //jump charge ends here
-    var minJump = 1/maxJump;
+    var minJump = .5;
     parent.velocity.y = Math.min(-JUMPPOWER*minJump, -JUMPPOWER*(parent.jumpCharge/maxJump));
     parent.jumpCharge = 0;
     parent.freefall = true;
