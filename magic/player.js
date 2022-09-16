@@ -161,8 +161,8 @@ function playerScript(parent) {
   }
   if (parent.jumping) {
     parent.jumpCharge = parent.jumpCharge + 1;
-    if (parent.jumpCharge > 4) {
-      parent.jumpCharge = 4;
+    if (parent.jumpCharge > 3) {
+      parent.jumpCharge = 3;
     }
   } else {
     parent.jumpCharge = 0;
@@ -385,9 +385,9 @@ function mistAttack(parent) {
 function playerJump(parent) {
   if (parent.jumps > 0) {
     playSound("jump");
-    var maxJump = 5;
-    var minJump = maxJump*.4;
-    parent.velocity.y = -Math.round(JUMPPOWER*(Math.max(minJump,parent.jumpCharge)/maxJump));
+    var maxJump = 3; //jump charge ends here
+    var minJump = 1/maxJump;
+    parent.velocity.y = Math.min(-JUMPPOWER*minJump, -JUMPPOWER*(parent.jumpCharge/maxJump));
     parent.jumpCharge = 0;
     parent.freefall = true;
     parent.jumping = false;
