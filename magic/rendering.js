@@ -106,6 +106,7 @@ function itemGet(name, msg) {
 }
 var lastFrame;
 var lastStamp = 0;
+var oneoneGray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,66,67,87,90,96,97,98,99,110];
 function loop(stamp) {
   if (Math.abs(lastStamp-stamp) >= 1000/FPS) {
     if (pro) {
@@ -131,7 +132,7 @@ function loop(stamp) {
           if (x*TILE <= camera.x+SCREENWIDTH-TILE/2 && x*TILE >= camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
             if (level.x == 1 || (level.x == 0 && level.y % 2 == 0)) { //w1 background
               iY = y
-              if (y > 11) {
+              if (y > 11 && !oneoneGray.includes(x)) {
                 if (y > map.height-12) {
                   drawGui(80,48,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);       
                   if (y > map.height-6) {
