@@ -1,13 +1,13 @@
 var SPRITES = LOADED[1];
 var TILE = 16;
-var FPS = 20;
+var FPS = 30;
 var WIDTH;
 var HEIGHT;
 var symbols = ["Z","W","Q","X","V","0","1","2","3","4"];
 var symbolPad = ["0","1","2","3","4","Q","V","W","X","Z"];
 const GRAVITY = 2;
 const TERMINALVELOCITY = 14;
-var JUMPPOWER = 15;
+var JUMPPOWER = 16;
 var WALKSPEED = 4;
 var BOUNCEPOWER = 10;
 var HITSTUN = 12;

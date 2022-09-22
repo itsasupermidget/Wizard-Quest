@@ -376,7 +376,7 @@ function mistAttack(parent) {
     parent.animation.current = 0;
     if (!parent.actions.includes("attack")) {
       parent.actions.push("attack");
-      parent.actionTimers.push([tick,0,4]);
+      parent.actionTimers.push([tick,0,2]);
     }  
   }
   reface(parent)
