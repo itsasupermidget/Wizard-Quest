@@ -185,7 +185,7 @@ var SWING = new animation(
     new sprite(new vector(0,136), new vector(16,24)),
     new sprite(new vector(16,136), new vector(16,24)),        
   ],
-  [2,1,0,0,1,1,2,2,3,3,3,3,2,2], 1, "swing"
+  [2,2,2,1,1,1,0,0,0,1,1,1,2,2,2,3,3,3,3,3,2,2,2,1,1,0], 1, "swing"
 );
 var SWINGLEFT = new animation(
   [new sprite(new vector(16,24), new vector(16,24)),
@@ -193,7 +193,7 @@ var SWINGLEFT = new animation(
     new sprite(new vector(32,136), new vector(16,24)),
     new sprite(new vector(48,136), new vector(16,24)),        
   ],
-  [2,1,0,0,1,1,2,2,3,3,3,3,2,2], 1, "swing"
+  [2,2,2,1,1,1,0,0,0,1,1,1,2,2,2,3,3,3,3,3,2,2,2,1,1,0], 1, "swing"
 );
 var SWORD = new animation(
   [new sprite(new vector(0,200), new vector(32,24)),
@@ -201,7 +201,7 @@ var SWORD = new animation(
     new sprite(new vector(64,200), new vector(32,24)),
     new sprite(new vector(96,200), new vector(32,24)),        
   ],
-  [2,1,0,0,1,1,2,2,3,3,3,3,2,2], 1
+  [2,2,2,1,1,1,0,0,0,1,1,1,2,2,2,3,3,3,3,3,2,2,2,1,1,0], 1
 );
 var SWORDLEFT = new animation(
   [new sprite(new vector(0,224), new vector(32,24)),
@@ -209,7 +209,7 @@ var SWORDLEFT = new animation(
     new sprite(new vector(64,224), new vector(32,24)),
     new sprite(new vector(96,224), new vector(32,24)),        
   ],
-  [2,1,0,0,1,1,2,2,3,3,3,3,2,2], 1
+  [2,2,2,1,1,1,0,0,0,1,1,1,2,2,2,3,3,3,3,3,2,2,2,1,1,0], 1
 );
 var SWORDSHARD = new animation([
   new sprite(new vector(120,16), new vector(8,8)),
@@ -231,7 +231,7 @@ var STAFF = new animation(
     new sprite(new vector(64,264), new vector(32,24)),
     new sprite(new vector(96,264), new vector(32,24)),        
   ],
-  [2,1,0,0,1,1,2,2,3,3,3,3,2,2]
+  [2,2,2,1,1,1,0,0,0,1,1,1,2,2,2,3,3,3,3,3,2,2,2,1,1,0]
 );
 var STAFFLEFT = new animation(
   [new sprite(new vector(0,288), new vector(32,24)),
@@ -239,7 +239,7 @@ var STAFFLEFT = new animation(
     new sprite(new vector(64,288), new vector(32,24)),
     new sprite(new vector(96,288), new vector(32,24)),        
   ],
-  [2,1,0,0,1,1,2,2,3,3,3,3,2,2]
+  [2,2,2,1,1,1,0,0,0,1,1,1,2,2,2,3,3,3,3,3,2,2,2,1,1,0]
 );
 var BOSSDROP = new animation(
   [new sprite(new vector(0,312), new vector(48,72)),

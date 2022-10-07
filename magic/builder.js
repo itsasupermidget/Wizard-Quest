@@ -1,30 +1,33 @@
 function generateLevel(stage) {
   player.visible = false;
   var respawning = true;
-  console.log(stage);
-  console.log("level::"+level.x+level.y);
   var random = ((level.x == 0 && level.y > 0) || (level.x == null && stage.x == 0));
   screen.fillStyle = "rgba(1,2,3,255)";
   screen.fillRect(0,0,canvas.width,canvas.height);
   map = new Image();
-  if (!random) {
+  if (!random && stage.x >= 0) {
     map.src = "magic/levels/"+stage.x+","+stage.y+".png";
   } else {
-    map.src = "magic/levels/0,1.png";
+    if (stage.x == -1) {
+      map.src = "magic/levels/-1,0.png";
+    } else {
+      map.src = "magic/levels/0,1.png";
+    }
   }
   collisions = [];
   enemies = 0;
   totalEnemies = 0;
   totalCollectables = 0;
   collectables = 0;
+  redBackground = [];
+  console.log(stage);
+  console.log(level);
   if (!level || stage.x != level.x || stage.y != level.y) {
     level = stage;
     respawning = false;
   } else {
     message = "press start to save your password";
     messageTimer = 120;
-    player.position.x = spawn.x;
-    player.position.y = spawn.y;
   }
   cameraReset = true;
   loading = true;
@@ -166,12 +169,34 @@ function generateLevel(stage) {
         var b = pixel[2];
         var a = pixel[3];
         if (r == 0 && g == 0 && b == 0) {
-          collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(64,48), new vector(16,16))));
+          collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
+          var check = screen.getImageData(x,y-2,1,1).data;
+          var check2 = screen.getImageData(x,y-3,1,1).data;
+          var check3 = screen.getImageData(x,y-1,1,1).data;
+          var check4 = screen.getImageData(x,y-3,1,1).data;       
+          if (check[0] == 0 && check[1] == 0 && check[2] == 0 && check2[0] == 0 && check2[1] == 0 && check2[2] == 0 && check3[0] == 1 && check3[1] == 2 && check3[2] == 3) {
+            for (var i=0; Math.max(0,i<y-2); i++) {
+              if (i == y-3) {
+                i = y-1;
+              }
+              collisions.push(new body(new vector(x*TILE,i*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
+            }
+          }
+          if (check3[0] == 0 && check3[1] == 0 && check3[2] == 0 && check4[0] == 0 && check4[1] == 0 && check4[2] == 0 && check[0] == 1 && check[1] == 2 && check[2] == 3) {
+            console.log("down at"+x);
+            for (var i=1; i<map.height-y+1; i++) {
+              if (i == 1) {
+                collisions.push(new body(new vector(x*TILE,(y+i-3)*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
+              } else {
+                collisions.push(new body(new vector(x*TILE,(y+i-1)*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
+              }
+            }
+          }   
         }
         if (r == 255 && g == 255 && b == 204) {
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(0,896), new vector(16,16))));
         }        
-        if (r == 0 && g == 255 && b == 0 && respawning == false) {
+        if (r == 0 && g == 255 && b == 0 && (respawning == false || spawn == undefined)) {
           spawn = new vector(x*TILE,y*TILE-9);
           player.position.x = spawn.x;
           player.position.y = spawn.y;
@@ -186,6 +211,14 @@ function generateLevel(stage) {
           enemies += 1;
           totalEnemies += 1;
         }
+        if (r == 255 && g == 66 && b == 0) {
+          generator = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));
+          generator.name = "spawner";
+          generator.gravity = true;
+          generator.solid = false;
+          generator.animation = SKELETONWALK;
+          collisions.push(generator);
+        }        
         if (r == 170 && g == 0 && b == 0) {
           var tumble = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));
           tumble.name = "tumble";
@@ -211,6 +244,7 @@ function generateLevel(stage) {
           spikes.name = "spikes";
           spikes.solid = false;
           collisions.push(spikes);
+          redBackground.push(x);
         }
         if (r == 32 && g == 32 && b == 32) {
           var rocks = new body(new vector(x*TILE,y*TILE), new sprite(new vector(64,64), new vector(16,16)));
@@ -286,7 +320,8 @@ function generateLevel(stage) {
           lava2.start = tick;
           lava2.current = 0;
           collisions.push(lava);
-          collisions.push(lava2);          
+          collisions.push(lava2);
+          redBackground.push(x);
         }
         if (r == 128 && g == 64 && b == 0) {
           var chest = new body(new vector(x*TILE,y*TILE), CHESTCLOSED);
@@ -467,6 +502,7 @@ function generateLevel(stage) {
     loading = false;
     player.position.x = spawn.x;
     player.position.y = spawn.y;
+    console.log(spawn)
     player.velocity.x = 0;
     player.velocity.y = 0;
     player.animation = RESPAWN.clone();

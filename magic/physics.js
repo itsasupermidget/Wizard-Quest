@@ -74,7 +74,9 @@ function body(position,s) {
     var sp = this.sprite;
     var pos = this.position;
     if (sp !== undefined && pos !== undefined && (this.visible || (this.parent && this.parent.children.includes(this)) && fromParent)) {
-      screen.drawImage(SPRITES,sp.position.x,sp.position.y,sp.size.x,sp.size.y,(pos.x-camera.x+sp.offset.x)*SCALE,(pos.y-camera.y+sp.offset.y)*SCALE,sp.size.x*SCALE,sp.size.y*SCALE); //RENDER
+      if (nes.includes(this) || this == player) {
+        screen.drawImage(SPRITES,sp.position.x,sp.position.y,sp.size.x,sp.size.y,(pos.x-camera.x+sp.offset.x)*SCALE,(pos.y-camera.y+sp.offset.y)*SCALE,sp.size.x*SCALE,sp.size.y*SCALE); //RENDER
+      }
       if (this.children.length > 0) {
         for (var i=0;i<this.children.length;i++) {
           this.children[i].render(true);
@@ -88,6 +90,11 @@ function body(position,s) {
         screen.stroke();
       }
     }    
+  }
+  this.frameCheck = function() {
+    if ((this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE*2 && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE) || this == player || (boss) || this.health < 1 || this.velocity.y != 0 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
+      nes.push(this);
+    }
   }
   this.play = function(fromParent) {  
     if (this.fizzles && this.animation && this.animation.current+1 == this.animation.order.length-1) {
@@ -355,12 +362,12 @@ function body(position,s) {
       }    
       if (this.name == "rocks") {
         var distance = this.position.distance(player.position);
-        if (distance < 6*TILE) {
+        if (distance < 7*TILE) {
           this.acceleration.y = 1;
           if (player.position.x >= this.position.x) {
             this.acceleration.y = 1;
           }
-          if (player.position.x + player.sprite.size.x < this.position.x || (player.position.x-this.position.x < TILE*1.5 && player.position.x + player.sprite.size.x > this.position.x + this.sprite.size.x)) {
+          if (player.position.x + player.sprite.size.x < this.position.x || (player.position.x-this.position.x < TILE*2 && player.position.x + player.sprite.size.x > this.position.x + this.sprite.size.x)) {
             this.velocity.y = -4;
           }
         }
@@ -387,6 +394,9 @@ function body(position,s) {
           }
         }
         this.sprite = DOORSPRITE;
+      }
+      if (this.name == "spawner") {
+        spawner(this);
       }
       if (this.name == "knight" && this.health > 0) {
         knight(this);
@@ -798,7 +808,10 @@ function body(position,s) {
       length = 0;
     }
     if (this.flicker < length || (this != player)) {
-      this.health -= 100/amount;
+      if ((this.animation && !(this.animation.name == "attack" || this.animation.name == "swing"))) {
+        console.log(this.animation.name);
+        this.health -= 100/amount;
+      }
       this.flicker = length;
       this.lastHit = Math.ceil(this.health/(100/amount));
       this.hitTimer = 8;

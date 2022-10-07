@@ -106,8 +106,10 @@ function itemGet(name, msg) {
 }
 var lastFrame;
 var lastStamp = 0;
-var oneoneRed = [17, 18, 19, 24, 25, 26, 43, 54, 55, 66, 67, 87, 90, 96, 97, 98, 99, 104, 105, 106, 107, 108, 112, 115, 118, 121, 125, 126, 127, 128, 129, 134, 135, 136, 137, 143, 146, 166, 167, 177, 178, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199];
+var redBackground = [];
+var nes = [];
 function loop(stamp) {
+  console.log(redBackground)
   if (Math.abs(lastStamp-stamp) >= 1000/FPS) {
     if (pro) {
       pro() //pro controller
@@ -132,7 +134,7 @@ function loop(stamp) {
           if (x*TILE <= camera.x+SCREENWIDTH-TILE/2 && x*TILE >= camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
             if (level.x == 1 || (level.x == 0 && level.y % 2 == 0)) { //w1 background
               iY = y
-              if (y > 11 && oneoneRed.includes(x)) {
+              if (y > 11 && redBackground.includes(x)) {
                 if (y > map.height-12) {
                   drawGui(80,48,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);       
                   if (y > map.height-6) {
@@ -146,7 +148,7 @@ function loop(stamp) {
                 drawGui(0,600,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE-camera.y);
                 drawGui(0,600,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
               }
-              if (y == 10 || y % 3 == 0) {
+              if (y == 10 || (x % 3 == 0 && y % 3 == 0) || (x % 3 == 1 && y % 3 == 1) || (x % 3 == 2 && y % 3 == 2)) {
                 drawGui(80,48,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
               }            
               y = iY
@@ -174,7 +176,21 @@ function loop(stamp) {
           }
         }
       }
-      screen.translate(TILE*SCALE,0);      
+      screen.translate(TILE*SCALE,0);
+      nes = [];
+      var offset = 0;
+      for (var i=0;i<collisions.length;i++) {
+        if (collisions[i] && collisions[i] != player && ((i+offset)%2 == 0) || tick/FPS > 20 || nes.length < 65) {
+          if (tick%2 == 0) {
+            offset = 1;
+          } else {
+            offset = 0;
+          }
+          if (collisions[i]) {
+            collisions[i].frameCheck(); //nes screen check
+          }
+        }
+      }
       for (var i=0;i<collisions.length;i++) {
         if (collisions[i] && collisions[i] != player) {
           collisions[i].play(); //run physics/rendering
@@ -279,7 +295,7 @@ function loop(stamp) {
         drawText("new game",-1,128);
         drawText("random game",-1,144);
         drawText("continue game",-1,160);
-        drawText("settings",-1,176);
+        drawText("battle mode",-1,176);
         if (menu == 0) { //highlight new game
           highlight(-1,128,8);
         }

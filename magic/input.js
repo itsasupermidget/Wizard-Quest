@@ -36,7 +36,7 @@ function startButton() {
       level = new vector(1,0);
       console.log("new game")
       loadPassword("ZWZZZZZW44ZZWZZ0") //ZWZZZVZW44ZZWZZ0 1,0 -- ZQZWZWZQ44ZXWZWZ 2,1
-    } else if (modeSelect == 2) {
+    } else if (modeSelect == 2) { //random game
       level = new vector(0,1);
       loadPassword("ZZZWZWZQ44ZXWZWZ");   
     }
@@ -54,12 +54,19 @@ function startButton() {
       }
       var world = randomPair(1,2);
       if (world == "ZW") {
-        var level = randomPair(1,7);
+        var lev = randomPair(1,7);
       } else {
-        var level = randomPair(1,5);
+        var lev = randomPair(1,5);
       }
       //loadPassword(world+randomPair(0,6)+level+randomPair(0,6)+randomPair(1,99)+randomPair(0,6)+randomPair(10,99)+randomPair(5,99));
-      loadPassword(world+"ZW"+level+"ZQ44ZXWZWZ");       
+      loadPassword(world+"ZW"+lev+"ZQ44ZXWZWZ");
+    }
+    if (password.length == 2) {
+      password = "ZWZWZQZQ44ZXWZWZ";
+    }
+    if (password.length == 3) {
+      level = new vector(-1,1);
+      loadPassword("ZZZWZWZQ44ZXWZWZ");
     }
     if (password.length == 16) {
       loadPassword(password);
@@ -392,7 +399,6 @@ function pro() {
       delKey(13);
       startButton();
     }    
-    console.log(con.buttons[9]); //+9 -8 ZR7 ZL6 R5 L4 
   }
   return true;
 }

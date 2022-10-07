@@ -1,6 +1,6 @@
 var SCREENWIDTH = 256; //256 NES, 400 Shovel Knight, 416 Widescreen, 384 SMM2
 var SCREENHEIGHT = 240;
-var SCALE = 4;
+var SCALE = 3;
 var canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 var screen = canvas.getContext("2d");

@@ -53,6 +53,12 @@ function loadPassword(password) {
   if (doubles[0] == 50 && doubles[2] == 2) {
     generateLevel(new vector(-1,0));
   } else {
-    generateLevel(new vector(doubles[0], doubles[2]));
+    if (doubles[0] == 0) {
+      console.log("battle");
+      generateLevel(new vector(-1,0));
+    } else {
+      console.log(doubles[0]);
+      generateLevel(new vector(doubles[0], doubles[2]));
+    }
   }
 }

@@ -33,7 +33,7 @@ function playerScript(parent) {
       }          
     }
     if (parent.position.distance(door.position) < TILE*8) {
-      key.position = new vector(parent.position.x+parent.sprite.size.x/2-8+parent.facing*8, parent.position.y+parent.sprite.size.y/2-4);
+      key.position = new vector(parent.position.x+parent.sprite.size.x/2+3, parent.position.y+parent.sprite.size.y/2);
     } else if (keyDist < TILE) {
       key.visible = false;
       key.position = door.position.clone();
@@ -376,7 +376,7 @@ function mistAttack(parent) {
     parent.animation.current = 0;
     if (!parent.actions.includes("attack")) {
       parent.actions.push("attack");
-      parent.actionTimers.push([tick,0,2]);
+      parent.actionTimers.push([tick,0,1]);
     }  
   }
   reface(parent)
