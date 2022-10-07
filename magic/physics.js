@@ -811,12 +811,12 @@ function body(position,s) {
       if ((this.animation && !(this.animation.name == "attack" || this.animation.name == "swing"))) {
         console.log(this.animation.name);
         this.health -= 100/amount;
-      }
-      this.flicker = length;
-      this.lastHit = Math.ceil(this.health/(100/amount));
-      this.hitTimer = 8;
-      if (this.name == "player" && (this.health/this.maxHealth < .4 || amount < 3) && this.health > 0) {
-        playSound("warning");
+        this.flicker = length;
+        this.lastHit = Math.ceil(this.health/(100/amount));
+        this.hitTimer = 8;
+        if (this.name == "player" && (this.health/this.maxHealth < .4 || amount < 3) && this.health > 0) {
+          playSound("warning");
+        }
       }
     }
   }
