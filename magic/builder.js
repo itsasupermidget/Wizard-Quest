@@ -1,5 +1,7 @@
+var backgroundTiles = [];
 function generateLevel(stage) {
   player.visible = false;
+  player2.visible = false;
   var respawning = true;
   var random = ((level.x == 0 && level.y > 0) || (level.x == null && stage.x == 0));
   screen.fillStyle = "rgba(1,2,3,255)";
@@ -162,7 +164,9 @@ function generateLevel(stage) {
       fillBlock(255,128,0,6,32); //exit      
     }
     for (var y=0; y<canvas.height; y++) {
+      backgroundTiles.push([]);
       for (var x=0;x<canvas.width;x++) {
+        backgroundTiles[y].push(null);
         var pixel = screen.getImageData(x,y,1,1).data;
         var r = pixel[0];
         var g = pixel[1];
@@ -170,28 +174,9 @@ function generateLevel(stage) {
         var a = pixel[3];
         if (r == 0 && g == 0 && b == 0) {
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
-          var check = screen.getImageData(x,y-2,1,1).data;
-          var check2 = screen.getImageData(x,y-3,1,1).data;
-          var check3 = screen.getImageData(x,y-1,1,1).data;
-          var check4 = screen.getImageData(x,y-3,1,1).data;       
-          if (check[0] == 0 && check[1] == 0 && check[2] == 0 && check2[0] == 0 && check2[1] == 0 && check2[2] == 0 && check3[0] == 1 && check3[1] == 2 && check3[2] == 3) {
-            for (var i=0; Math.max(0,i<y-2); i++) {
-              if (i == y-3) {
-                i = y-1;
-              }
-              collisions.push(new body(new vector(x*TILE,i*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
-            }
-          }
-          if (check3[0] == 0 && check3[1] == 0 && check3[2] == 0 && check4[0] == 0 && check4[1] == 0 && check4[2] == 0 && check[0] == 1 && check[1] == 2 && check[2] == 3) {
-            console.log("down at"+x);
-            for (var i=1; i<map.height-y+1; i++) {
-              if (i == 1) {
-                collisions.push(new body(new vector(x*TILE,(y+i-3)*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
-              } else {
-                collisions.push(new body(new vector(x*TILE,(y+i-1)*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
-              }
-            }
-          }   
+        }
+        if (r == 32 && g == 0 && b == 0) {
+          backgroundTiles[y][x] = "bricks"
         }
         if (r == 255 && g == 255 && b == 204) {
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(0,896), new vector(16,16))));
@@ -510,6 +495,15 @@ function generateLevel(stage) {
     player.children = [];
     collisions.push(player);
     player.visible = true;
+    player2.position.x = spawn.x;
+    player2.position.y = spawn.y;
+    console.log(spawn);
+    player2.velocity.x = 0;
+    player2.velocity.y = 0;
+    player2.animation = RESPAWN.clone();
+    player2.attacks = [];
+    player2.children = [];
+    player2.visible = true;    
     screen.fillStyle = "rgba(1,2,3,255)";
     screen.fillRect(0,0,canvas.width,canvas.height);
   } 

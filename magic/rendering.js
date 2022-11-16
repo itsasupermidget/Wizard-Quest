@@ -109,11 +109,11 @@ var lastStamp = 0;
 var redBackground = [];
 var nes = [];
 function loop(stamp) {
-  console.log(redBackground)
   if (Math.abs(lastStamp-stamp) >= 1000/FPS) {
     if (pro) {
       pro() //pro controller
     }
+    SCALE = Math.floor((window.innerHeight-20)/(SCREENHEIGHT)*10)/10; //Adjust screen size
     canvas.width = SCREENWIDTH*SCALE;
     canvas.height = SCREENHEIGHT*SCALE;
     canvas.style.position = "absolute";
@@ -132,7 +132,7 @@ function loop(stamp) {
         for (var y=0;y<map.height;y++) {
           for (var x=0;x<map.width;x++) {
           if (x*TILE <= camera.x+SCREENWIDTH-TILE/2 && x*TILE >= camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
-            if (level.x == 1 || (level.x == 0 && level.y % 2 == 0)) { //w1 background
+            if (level.x == 1 || (level.x == 0 && level.y % 2 == 0 && level.y != 0)) { //w1 background
               iY = y
               if (y > 11 && redBackground.includes(x)) {
                 if (y > map.height-12) {
@@ -150,7 +150,10 @@ function loop(stamp) {
               }
               if (y == 10 || (x % 3 == 0 && y % 3 == 0) || (x % 3 == 1 && y % 3 == 1) || (x % 3 == 2 && y % 3 == 2)) {
                 drawGui(80,48,TILE,TILE/2,x*TILE-camera.x+TILE,y*TILE+8-camera.y);
-              }            
+              }           
+              if (backgroundTiles[y][x] == "bricks") {
+                drawGui(64,48,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);
+              }
               y = iY
             } else {
               var backgroundLevel = 22;
@@ -180,7 +183,7 @@ function loop(stamp) {
       nes = [];
       var offset = 0;
       for (var i=0;i<collisions.length;i++) {
-        if (collisions[i] && collisions[i] != player && ((i+offset)%2 == 0) || tick/FPS > 20 || nes.length < 65) {
+        if (collisions[i] && collisions[i] != player && ((i+offset)%2 == 0) || tick/FPS > 20 || nes.length < 65 || (collisions[i] && collisions[i].solid)) {
           if (tick%2 == 0) {
             offset = 1;
           } else {
@@ -192,7 +195,7 @@ function loop(stamp) {
         }
       }
       for (var i=0;i<collisions.length;i++) {
-        if (collisions[i] && collisions[i] != player) {
+        if (collisions[i] && collisions[i].name != "player") {
           collisions[i].play(); //run physics/rendering
         }
       }
@@ -213,12 +216,18 @@ function loop(stamp) {
       screen.fillRect(canvas.width/2-2*SCALE,19*SCALE,4*SCALE,2*SCALE);    
       drawText("mana",SCREENWIDTH/2+29,5);
       drawGui(0,160,32,16,SCREENWIDTH/2+24,12); //mana bar
+      if (!collisions.includes(key)) {
+        drawGui(128,608,16,8,SCREENWIDTH/2-9,16); //key
+      }
+      drawGui(120,176,8,8,SCREENWIDTH/2-74,16); //x
+      drawGui(player.sprite.position.x,player.sprite.position.y,16,8,SCREENWIDTH/2-75,8); //hat
+      drawNumbers(lives+" ", 62, 16);
       if (player.mana < 0) {
         player.mana = 0;
       }
       drawGui(32,168,player.mana/player.maxMana*24,8,SCREENWIDTH/2+28,16); //mana gauge
-      drawGui(96,138,48,22,SCREENWIDTH/2+76,10); //progress bar
-      if (DEBUG) {
+      drawGui(96,138,48,20,SCREENWIDTH/2+76,10); //progress bar
+      if (!DEBUG) {
         drawNumbers(tick+" ", 8,8);
         drawNumbers(Math.round(tick/FPS)+" ", 8,16);
         var unix = new Date().getTime();
@@ -227,7 +236,7 @@ function loop(stamp) {
       }
       if (!boss) {
         drawText("progress",SCREENWIDTH/2+75,3);
-        drawGui(104,160,36*Math.max(1,stageProgress),12,SCREENWIDTH/2+80,14); //progress gauge
+        drawGui(104,160,36*Math.min(1,stageProgress),12,SCREENWIDTH/2+80,14); //progress gauge
         function minimap(that) {
           screen.fillStyle = "white";
           screen.fillRect(SCREENWIDTH*SCALE/2+80*SCALE + that.x*SCALE/WIDTH*36*SCALE,19*SCALE,1*SCALE,2*SCALE)
@@ -276,8 +285,9 @@ function loop(stamp) {
         screen.fillStyle = "black";
         screen.fillRect(0,0,canvas.width,canvas.height);
       }
-      if (player) {
+      if (player || player2) {
         player.play();
+        player2.play();
       }
       for (var i=0;i<keyMemory.length;i++) {
         if (keys.includes(keyMemory[i])) {

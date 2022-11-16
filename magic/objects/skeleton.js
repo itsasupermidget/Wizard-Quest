@@ -21,6 +21,11 @@ function skeleton(parent) {
   } else {
     parent.facing = -1;
   }
+  if (parent.animation == SKELETONSTOOL) {
+    if (parent.animation.current == parent.animation.order.length-1) {
+      parent.animation = SKELETONWALK;
+    }
+  }
   if (distance < TILE*COMBATRANGE && COMBATHP <= distance) {
     COMBATHP = distance;
     player.facing = -parent.facing;
@@ -58,11 +63,19 @@ function skeleton(parent) {
     if (that.name == "player") {
       if (parent.debounce == 0 && !parent.flicker) {
         parent.debounce = DEBOUNCE;
-        that.hit(DAMAGE);
-        that.bounce(parent);
-
+        if (that.velocity.y >= parent.velocity.y && that.jumpCharge == 0) {
+          that.hit(DAMAGE);
+          parent.velocity.x = -parent.facing*KNOCKBACK;
+        }
+        if (that.jumpCharge > 0 || that.jumping) {
+          parent.animation = SKELETONSTOOL;
+          parent.animation.start = tick;
+          parent.animation.current = 0;        
+        }
+        if (that.velocity.y > parent.velocity.y) {
+          that.bounce(parent);
+        }
       }
-      parent.velocity.x = -parent.facing*KNOCKBACK;
     }
     if (that.name == "mist") {
       parent.hit(MISTDAMAGE, MISTSTUN);

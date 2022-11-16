@@ -92,7 +92,7 @@ function body(position,s) {
     }    
   }
   this.frameCheck = function() {
-    if ((this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE*2 && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE) || this == player || (boss) || this.health < 1 || this.velocity.y != 0 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
+    if ((this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE*2 && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE) || this.name == "player" || (boss) || this.health < 1 || this.velocity.y != 0 || this.name == "mist" || this.name == "fire" || this.name == "key" || this.solid) { //RENDER DISTANCE
       nes.push(this);
     }
   }
@@ -111,12 +111,18 @@ function body(position,s) {
         this.flicker = false;
         this.visible = true;
         if (this.animation.current == this.animation.order.length-2) {
-          generateLevel(level);
           var respawnPercent = .7;
           if (difficultyGoal == 0) {
             respawnPercent = 1;
           } else if (difficultyGoal == 1) {
             respawnPercent = .3;
+          }
+          if (this == player) {
+            generateLevel(level);
+          } else {
+            this.position = player.position;
+            this.animation = IDLE;
+            this.animation.current = 0;
           }
           this.health = this.maxHealth*respawnPercent;
           this.mana = this.maxMana*respawnPercent;
@@ -235,7 +241,7 @@ function body(position,s) {
         }
       }
     }
-    if ((this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE*2 && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE) || this == player || (boss) || this.health < 1 || this.velocity.y != 0 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
+    if ((this.position.x < camera.x+SCREENWIDTH-TILE/2 && this.position.x > camera.x-TILE*2 && this.position.y < camera.y+SCREENHEIGHT && this.position.y > camera.y+TILE) || this.name == "player" || (boss) || this.health < 1 || this.velocity.y != 0 || this.name == "mist" || this.name == "fire" || this.name == "key") { //RENDER DISTANCE
       if (this.flicker != false) {
         if (this == player) {
           this.visible = tick%2==0;
@@ -644,6 +650,14 @@ function body(position,s) {
       if (this.gravity && this.canMove(new vector(0,this.velocity.y+1))) {
         this.velocity.add(new vector(0,GRAVITY));
         this.velocity.y = Math.min(this.velocity.y,TERMINALVELOCITY);
+        if (this.name == "player") {
+          if (this.velocity.y < JUMPPOWER*-.666) {
+            this.velocity.y -= GRAVITY/2;
+          }
+          if (this.velocity.y > TERMINALVELOCITY/2) {
+            this.velocity.add(new vector(0,GRAVITY/2));
+          }
+        }
       }
       this.velocity.add(this.acceleration);
       var oldVel = new vector(this.velocity.x, this.velocity.y);
@@ -687,10 +701,13 @@ function body(position,s) {
         }
       }
       this.position.add(this.velocity);
-      if (this.name == "player" && player.sprite && player.visible) {
+      if (this.name == "player" && player.sprite) {
         var side = SCREENWIDTH/2-player.sprite.size.x/2;
         var top = SCREENHEIGHT/2;
-        var goal = new vector(player.position.x-side, player.position.y-top);
+        if (!collisions.includes(player2)) {
+          player2.position = new vector(player.position.x, player.position.y);
+        }
+        var goal = new vector(((player.position.x+player2.position.x+player.position.x)/3)-side, ((player.position.y+player2.position.y)/2)-top+TILE*looking);
         camera.x += goal.x-camera.x;
         camera.y = goal.y;
         if (cameraReset) {

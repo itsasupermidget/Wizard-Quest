@@ -99,21 +99,21 @@ function downButton() {
   }
 }
 
-function leftButton() {
-  player.walking = -1;
-  player.facing = -1;
+function leftButton(p) {
+  p.walking = -1;
+  p.facing = -1;
 }
 
-function rightButton() {
-  player.walking = 1;
-  player.facing = 1;
+function rightButton(p) {
+  p.walking = 1;
+  p.facing = 1;
 }
 
-function jumpRelease() {
-  if (player.jumping) {
-    player.jumpCancel = true;
+function jumpRelease(p) {
+  if (p.jumping) {
+    p.jumpCancel = true;
   }
-  player.jumping = false;
+  p.jumping = false;
   if (passwordScreen) {
     password += symbolPad[menu];
   }
@@ -138,12 +138,24 @@ document.addEventListener("keydown", function(event) {
       if ((key == 75 || key == 32) && !player.drop) {
         player.jumping = true;
       }
-      if (key == 65) {
-        leftButton();
-      }  
-      if (key == 68) {
-        rightButton();
+      if ((key == 88) && !player.drop) {
+        player2.jumping = true;
+      }      
+      if (key == 17) {
+        player2.position = new vector(player.position.x, player.position.y);
       }
+      if (key == 65) {
+        leftButton(player);
+      }
+      if (key == 37) {
+        leftButton(player2);
+      }      
+      if (key == 68) {
+        rightButton(player);
+      }
+      if (key == 39) {
+        rightButton(player2);
+      }      
       if (key == 87) {
         player.climbing = -1;    
       }
@@ -177,14 +189,23 @@ document.addEventListener("keyup", function(event) {
   }
   if (player.health > 0) {
     if (key == 74 || key == 16) {
-      if (keys.includes(87) && !BUTTONATTACKS) {
+      if (keys.includes(38) && !BUTTONATTACKS) {
         swingSword(player);
-      } else if (keys.includes(83) && !BUTTONATTACKS) {
+      } else if (keys.includes(40) && !BUTTONATTACKS) {
         swingStaff(player);
-      } else if ((!keys.includes(87) && !keys.includes(83)) || BUTTONATTACKS) {
+      } else if ((!keys.includes(38) && !keys.includes(40)) || BUTTONATTACKS) {
         mistAttack(player);
       }
     }
+    if (key == 67) {
+      if (keys.includes(38) && !BUTTONATTACKS) {
+        swingSword(player2);
+      } else if (keys.includes(40) && !BUTTONATTACKS) {
+        swingStaff(player2);
+      } else if ((!keys.includes(38) && !keys.includes(40)) || BUTTONATTACKS) {
+        mistAttack(player2);
+      }
+    }    
     if (key == 76) {
       swingSword(player);
     }
@@ -192,6 +213,13 @@ document.addEventListener("keyup", function(event) {
       swingStaff(player);
     }
   }  
+  if (key == 50) {
+    if (collisions.includes(player2)) {
+      collisions[collisions.indexOf(player2)] = null;
+    } else {
+      collisions.push(player2);
+    }
+  }
   if (key == 65 && !keys.includes(68)) {
     player.walking = 0;
     if (passwordScreen) {
@@ -212,6 +240,26 @@ document.addEventListener("keyup", function(event) {
       }
     }
   }
+  if (key == 37 && !keys.includes(39)) {
+    player2.walking = 0;
+    if (passwordScreen) {
+      if (menu == 0) {
+        menu = 9
+      } else {
+        menu -= 1;
+      }
+    }
+  }  
+  if (key == 39 && !keys.includes(37)) {
+    player2.walking = 0;
+    if (passwordScreen) {
+      if (menu == 9) {
+        menu = 0
+      } else {
+        menu += 1;
+      }
+    }
+  }  
   if (key == 87 && !passwordScreen) {
     upButton();
   } 
@@ -222,8 +270,11 @@ document.addEventListener("keyup", function(event) {
     password = password.slice(0,password.length-1);
   }
   if (key == 75 || key == 32) {
-    jumpRelease();
+    jumpRelease(player);
   }
+  if (key == 88) {
+    jumpRelease(player2);
+  }  
   if (key == 13) {
     startButton();
   }
@@ -253,19 +304,19 @@ function touchControls(event, name) {
     var padDist = touchPos.distance(TOUCHPADCENTER);
     if (padDist < 32) {
       if (touchPos.x < TOUCHPADCENTER.x && name != "end") {
-        leftButton();
+        leftButton(player);
       } else if (touchPos.x > TOUCHPADCENTER.x && name != "end") {
-        rightButton();
+        rightButton(player);
       } else {
         player.walking = 0;
         //player.climbing = 0;
       }
       if (name == "start") {
         if (touchPos.y < TOUCHPADCENTER.y) {
-          upButton();
+          upButton(player);
           player.climbing = -1;
         } else if (touchPos.y > TOUCHPADCENTER.y) {
-          downButton();
+          downButton(player);
           player.climbing = 1;
         }
       }
@@ -289,7 +340,7 @@ function touchControls(event, name) {
       if (name == "start") {
         player.jumping = true;
       } else if (name == "end") {
-        jumpRelease();
+        jumpRelease(player);
       }
     }  
   }
@@ -314,31 +365,31 @@ function pro() {
       var ud = Math.round(con.axes[1]*2)/2;
     }
     if (con.buttons[0].pressed) { //B
-      player.jumping = true;
-      keys.push(75);
+      player2.jumping = true;
+      keys.push(88);
       keyTimes.push(0);
     }
     if (con.buttons[2].pressed) { //Y
-      player.charging = true;
-      keys.push(74);
+      player2.charging = true;
+      keys.push(67);
       keyTimes.push(0);
     }
-    if (keys.includes(75) && (!con.buttons[0].pressed)) { //B up
-      jumpRelease();
-      delKey(75);
+    if (keys.includes(88) && (!con.buttons[0].pressed)) { //B up
+      jumpRelease(player2);
+      delKey(88);
     }
-    if (keys.includes(74) && (!con.buttons[2].pressed)) { //Y up
-      mistAttack(player);
+    if (keys.includes(67) && (!con.buttons[2].pressed)) { //Y up
+      mistAttack(player2);
       password = password.slice(0,password.length-1);
-      delKey(74);
+      delKey(67);
     }
     if (con.buttons[12].pressed || ud == -1) { //Up
-      player.climbing = -1;
+      player2.climbing = -1;
       keys.push(87);
       keyTimes.push(0);
     }
     if (con.buttons[13].pressed || ud == 1) { //Down
-      player.climbing = 1;
+      player2.climbing = 1;
       keys.push(83);
       keyTimes.push(0);
     }
@@ -354,8 +405,8 @@ function pro() {
         downButton();
       }      
     }    
-    if (keys.includes(65) && !keys.includes(68) && (!con.buttons[14].pressed) || lr == 0) { //Left up
-      delKey(65);
+    if (keys.includes(37) && !keys.includes(39) && (!con.buttons[14].pressed) || lr == 0) { //Left up
+      delKey(37);
       if (passwordScreen) {
         if (menu == 0) {
           menu = 9;
@@ -364,8 +415,8 @@ function pro() {
         }
       }
     }
-    if (keys.includes(68) && !keys.includes(65) && (!con.buttons[15].pressed) || lr == 0) { //Right up
-      delKey(68);
+    if (keys.includes(39) && !keys.includes(37) && (!con.buttons[15].pressed) || lr == 0) { //Right up
+      delKey(39);
       if (passwordScreen) {
         if (menu == 9) {
           menu = 0;
@@ -375,21 +426,21 @@ function pro() {
       }
     } 
     if (con.buttons[14].pressed || lr == -1) { //Left
-      leftButton();
-      keys.push(65);
+      leftButton(player2);
+      keys.push(37);
       keyTimes.push(0);
     } else if (con.buttons[15].pressed || lr == 1) { //Right
-      rightButton();
-      keys.push(68);
+      rightButton(player2);
+      keys.push(39);
       keyTimes.push(0);
     } else {
-      player.walking = 0;
+      player2.walking = 0;
     }
     if (con.buttons[3].pressed) { //X
-      swingSword(player);
+      swingSword(player2);
     }
     if (con.buttons[1].pressed) { //A
-      swingStaff(player);
+      swingStaff(player2);
 
     }
     if (con.buttons[9].pressed && !keys.includes(13)) {
