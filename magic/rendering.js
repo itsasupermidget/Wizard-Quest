@@ -208,14 +208,17 @@ function loop(stamp) {
         screen.fillRect(0,32*SCALE,canvas.width,8*SCALE);
         drawText(message,-1,32);
         messageTimer -= 1;
+      } 
+      if (door) {
+        drawGui(door.sprite.position.x,door.sprite.position.y,16,29,SCREENWIDTH/2-8,4); //keyhole door
       }
       drawText("level",-1,5);
       drawNumbers(level.x+" "+level.y,-1,16);
-      screen.fillStyle = white;
-      screen.fillRect(canvas.width/2-2*SCALE,19*SCALE,4*SCALE,2*SCALE);    
-      if (!collisions.includes(key) || key.visible) {
-        drawGui(128,608,16,8,SCREENWIDTH/2-9,16); //key
-      }      
+      //screen.fillStyle = white;
+      //screen.fillRect(canvas.width/2-2*SCALE,19*SCALE,4*SCALE,2*SCALE);    
+      if (36*Math.min(1,stageProgress) == 36) {
+        //drawGui(128,608,16,8,SCREENWIDTH/2-9,16); //key
+      }
       function playerGui(p, y){
         drawText("health",SCREENWIDTH/2-58,y+5);
         drawGui(0,160,32,16,SCREENWIDTH/2-56,y+12); //health bar    
@@ -231,9 +234,9 @@ function loop(stamp) {
         }
         drawGui(32,168,p.mana/p.maxMana*24,8,SCREENWIDTH/2+28,y+16); //mana gauge
       }
-      playerGui(player, 0);
-      if (player2.visible) {
-        playerGui(player2, 208);
+      playerGui(player, 0); //p1 gui
+      if (collisions.includes(player2)) {
+        playerGui(player2, 208); //p2 gui
       }
       drawGui(96,128,48,32,SCREENWIDTH/2-120,0); //inventory
       drawGui(96,138,48,20,SCREENWIDTH/2+77,10); //progress bar

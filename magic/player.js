@@ -58,7 +58,7 @@ function playerScript(parent) {
       }
       if (current == end) {
         if (name == "attack") {
-          var attack = new body(new vector(parent.position.x + 16 * parent.animationFacing, parent.position.y + 8), new sprite(new vector(0, 0), new vector(0, 0)));
+          var attack = new body(new vector(parent.position.x + 6 * parent.animationFacing, parent.position.y + 8), new sprite(new vector(0, 0), new vector(0, 0)));
           if (parent.animationFacing == -1) {
             attack.animation = MISTLEFT.clone();
           } else if (parent.animationFacing == 1) {
@@ -182,6 +182,13 @@ function playerScript(parent) {
     necklace.sprite = new sprite(new vector(128, 600), new vector(8, 8));
   }
   if (parent.animation && parent.animation.name == "swing") {
+    if (tick % 10 != 0) {
+      if (parent.velocity.x <= -WALKSPEED/2) {
+        parent.velocity.x = Math.floor(-WALKSPEED/2); 
+      } else if (parent.velocity.x > WALKSPEED/2) {
+        parent.velocity.x = Math.floor(WALKSPEED/2)
+      }
+    }
     if (parent.attacks.includes("sword") && (parent.animation.current == 5 || parent.animation.current == 7 || (parent.animation.current > 5 && parent.animation.current < parent.chargeLevel) && player.mana > 5)) {
       var shard = new body(new vector(parent.position.x - 8 + (parent.animation.order.length - parent.animation.current) * parent.animationFacing * 2, parent.position.y + 14 - parent.animation.current), new sprite(new vector(0, 0), new vector(0, 0)));
       shard.animation = SWORDSHARD;

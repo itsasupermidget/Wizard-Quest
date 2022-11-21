@@ -11,5 +11,5 @@ canvas.height = SCREENHEIGHT*SCALE;
 screen.font = "64px Lucida Console";
 canvas.style.position = "absolute";
 canvas.style.marginLeft = (window.innerWidth-canvas.width)/2-8+"px";
-canvas.style.marginTop = (window.innerHeight-canvas.height)/2-5+"px";
+canvas.style.marginTop = (window.innerHeight-canvas.height)/2-128+"px";
 screen.textAlign = "center";

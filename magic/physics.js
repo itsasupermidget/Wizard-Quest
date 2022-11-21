@@ -866,12 +866,21 @@ function body(position,s) {
       length = 0;
     }
     if (this.flicker < length || (this != player)) {
-      if ((this.animation && !(this.animation.name == "attack" || this.animation.name == "swing"))) {
-        console.log(this.animation.name);
-        this.health -= 100/amount;
+      if (this.animation) {
+        var magicBlock = (this.animation.name == "attack" || this.animation.name == "swing");
+        if (magicBlock) {
+          this.mana -= 100/amount;
+          if (this.mana < 0) {
+            this.health += this.mana;
+            console.log(this.mana)
+            this.mana = 0;
+          }
+        } else {
+          this.health -= 100/amount;
+          this.lastHit = Math.ceil(this.health/(100/amount));
+          this.hitTimer = 8;
+        }
         this.flicker = length;
-        this.lastHit = Math.ceil(this.health/(100/amount));
-        this.hitTimer = 8;
         if (this.name == "player" && (this.health/this.maxHealth < .4 || amount < 3) && this.health > 0) {
           playSound("warning");
         }

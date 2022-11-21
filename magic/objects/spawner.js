@@ -28,7 +28,7 @@ function spawner(parent) {
       enemies += 1;
     }
     if (tick > 1200 && tick < 1700) {
-      var minion = new body(new vector(parent.position.x, parent.position.y),new sprite(new vector(0,48), new vector(16,16)));
+      var minion = new body(new vector(parent.position.x, parent.position.y-8),new sprite(new vector(0,48), new vector(16,16)));
       minion.name = "plant";
       minion.gravity = true;
       minion.solid = false;
