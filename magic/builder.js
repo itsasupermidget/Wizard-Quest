@@ -1,5 +1,7 @@
 var backgroundTiles = [];
 function generateLevel(stage) {
+  player.coins = levelCoins;
+  backgroundTiles = [];  
   player.visible = false;
   player2.visible = false;
   var respawning = true;
@@ -197,11 +199,11 @@ function generateLevel(stage) {
           totalEnemies += 1;
         }
         if (r == 255 && g == 66 && b == 0) {
-          generator = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));
+          generator = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,96), new vector(16,16)));
           generator.name = "spawner";
           generator.gravity = true;
           generator.solid = false;
-          generator.animation = SKELETONWALK;
+          generator.animation = BEEHIVE;
           collisions.push(generator);
         }        
         if (r == 170 && g == 0 && b == 0) {
@@ -345,6 +347,13 @@ function generateLevel(stage) {
           heart.solid = false;
           collisions.push(heart);
         }
+        if (r == 255 && g == 127 && b == 255) {
+          var coin = new body(new vector(x*TILE+8,y*TILE+8),new sprite(new vector(0,128), new vector(8,8)));
+          coin.name = "coin";
+          coin.solid = false;
+          coin.animation = COIN;
+          collisions.push(coin);
+        }        
         if (r == g && g == b) {
           if (r >= 64 && r <= 66) {
             var timer = new body(new vector(x*TILE,y*TILE), new sprite(new vector(48,112), new vector(16,16)));

@@ -59,7 +59,7 @@ var loading = false;
 var menu = 0;
 var password = "";
 var looking = 0;
-var lives = 9;
+var levelCoins = 0;
 
 function sprite(position,size,offset) {
   this.position = position;

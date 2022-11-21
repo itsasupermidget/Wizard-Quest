@@ -62,6 +62,8 @@ function body(position,s) {
   this.owner = null;
   this.actions = [];
   this.actionTimers = [];
+  this.lives = 5;
+  this.coins = 0;
   this.clone = function() {
     var thisClone = new body(new vector(this.position.x, this.position.y), new sprite(new vector(this.sprite.position.x, this.sprite.position.y), new vector(this.sprite.size.x, this.sprite.size.y)));
     thisClone.velocity = new vector(this.velocity.x, this.velocity.y);
@@ -118,9 +120,21 @@ function body(position,s) {
             respawnPercent = .3;
           }
           if (this == player) {
-            generateLevel(level);
+            this.lives -= 1;
+            if (this.lives < 0) {
+              if (difficultyGoal == 0) {
+                this.lives = 9;
+              } else if (difficultyGoal == 1) {
+                this.lives = 1;
+              } else {
+                this.lives = 5;
+              }
+              generateLevel(new vector(level.x, 1));
+            } else {
+              generateLevel(level);
+            }
           } else {
-            this.position = player.position;
+            this.position = new vector(player.position.x, player.position.y);
             this.animation = IDLE;
             this.animation.current = 0;
           }
@@ -131,9 +145,13 @@ function body(position,s) {
         if (this.sprite && this.sprite.size) {
           var heart = new body(new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2), new sprite(new vector(0,128), new vector(8,8)));
           heart.name = "heart";
-          heart.velocity = new vector(0,-6);
+          heart.velocity = new vector(0,-8);
           heart.gravity = true;
           heart.solid = false;
+          if (player.health/player.maxHealth > .5 && player.mana/player.maxMana > .25) {
+            heart.name = "coin";
+            heart.animation = COIN;
+          }
         }
         if (this.name == "skeleton") {
           if (this.animation != SKELETONDIE) {
@@ -233,7 +251,7 @@ function body(position,s) {
               var heartClone = heart.clone();
               heartClone.position.x += 16;
               collisions.push(heartClone);
-              itemGet("sword", "item get!  sword");
+              itemGet("sword", "item get!  sword! up b move");
             }
           } else {
             collisions[collisions.indexOf(this)] = null;            
@@ -257,7 +275,7 @@ function body(position,s) {
       if (this.debounce > 0) {
         this.debounce -=1 ;
       }  
-      this.increaseMana((Math.max(0,this.mana)+10)/this.maxMana*2);
+      this.increaseMana(Math.ceil(Math.max(1,this.mana)/64));
       if (this.name == "player") {
         if (this.mana < 10) {
           message = "out of mana";
@@ -324,7 +342,7 @@ function body(position,s) {
             } else if (level.equals(1,4)) {
               itemGet("staffc", "item get!  spell part iii of iv");
             } else if (level.equals(1,5)) {
-              itemGet("staff", "item get!  flame staff");    
+              itemGet("staff", "item get!  flame staff! down b move");    
             } else if (level.x > 1 && this.health > this.maxHealth/3) {
               itemGet("necklace", "item get! magic necklace")
             } else {
@@ -369,12 +387,12 @@ function body(position,s) {
       if (this.name == "rocks") {
         var distance = this.position.distance(player.position);
         if (distance < 7*TILE) {
-          this.acceleration.y = 1;
-          if (player.position.x >= this.position.x) {
-            this.acceleration.y = 1;
-          }
-          if (player.position.x + player.sprite.size.x < this.position.x || (player.position.x-this.position.x < TILE*2 && player.position.x + player.sprite.size.x > this.position.x + this.sprite.size.x)) {
+          if (player.position.x + player.sprite.size.x > this.position.x + this.sprite.size.x*1.5) {
             this.velocity.y = -4;
+          } else {
+            if (player.position.x >= this.position.x-16) {
+              this.acceleration.y += 1;
+            }            
           }
         }
       }
@@ -389,6 +407,7 @@ function body(position,s) {
           for (var i=0;i<hits.length;i++) {
             var that = hits[i];
             if (that.name == "player") {
+              levelCoins = that.coins;
               generateLevel(new vector(level.x, level.y+1));
             }
           }
@@ -427,6 +446,7 @@ function body(position,s) {
           }
           if (that.name == "spikes" || that.name == "lava") {
             this.visible = false;
+            this.health = 0;
           }
           if (that.solid) {
             this.position.y -= 8;
@@ -434,6 +454,27 @@ function body(position,s) {
           }
         }      
       }
+      if (this.name == "coin" && this.health > 0) {
+        var hits = this.collision();
+        this.visible = true;
+        for (var i=0;i<hits.length;i++) {
+          var that = hits[i];
+          if (that.name == "player" && this.health > 0) {
+            that.coins += 1;
+            playSound("collect");
+            this.health = 0;
+            this.visible = false;
+          }
+          if (that.name == "spikes" || that.name == "lava") {
+            this.visible = false;
+            this.health = 0;
+          }
+          if (that.solid) {
+            this.position.y -= 8;
+            this.visible = false;
+          }
+        }      
+      }      
       if (this.name == "timer") {
         var frame = Math.floor((tick%480)/160)+1;
         this.visible = this.health == frame || this.health == 1 && frame == 2 || this.health == 2 && frame == 3 || this.health == 3 && frame == 1;
@@ -484,7 +525,7 @@ function body(position,s) {
       if (this.name == "skeleboss" && this.health > 0) {
         skeleboss(this);
       }
-      if (this.animation != null && !this.dead) {
+      if (this.animation != null && !this.dead && this.animation.play) {
         this.sprite = this.animation.play(this);
       }
       if (this.name == "mist") {

@@ -25,19 +25,22 @@ function startButton() {
   } else if (modeSelect != false) {
     if (menu == 0) { //select easy
       difficultyGoal = 0;
+      lives = 9;
     }
     if (menu == 1) { //select normal
       difficultyGoal = .5;
+      lives = 5;
     }
     if (menu == 2) { //select hard
       difficultyGoal = 1;
+      lives = 1;
     }
     if (modeSelect == 1) { //new game
       level = new vector(1,0);
       console.log("new game")
       loadPassword("ZWZZZZZW44ZZWZZ0") //ZWZZZVZW44ZZWZZ0 1,0 -- ZQZWZWZQ44ZXWZWZ 2,1
     } else if (modeSelect == 2) { //random game
-      level = new vector(0,1);
+      level = new vector(1,-1);
       loadPassword("ZZZWZWZQ44ZXWZWZ");   
     }
     paused = false;
@@ -67,6 +70,9 @@ function startButton() {
     if (password.length == 3) {
       level = new vector(-1,1);
       loadPassword("ZZZWZWZQ44ZXWZWZ");
+    }
+    if (password.length == 4) {
+      loadPassword("ZWZWZ3ZQ44ZXWZZ0");     
     }
     if (password.length == 16) {
       loadPassword(password);
@@ -220,6 +226,24 @@ document.addEventListener("keyup", function(event) {
       collisions.push(player2);
     }
   }
+  if (key == 49) {
+    SPRITES = LOADED[1];
+    sky = "rgba(136,126,203,255)";
+    black = "black";    
+    white = "white";
+  }
+  if (key == 51) {
+    SPRITES = LOADED[2];
+    sky = "rgba(104,136,252,255)";
+    black = "black";
+    white = "white";
+  }  
+  if (key == 52) {
+    SPRITES = LOADED[3];
+    black = "rgba(15,56,15,255)";
+    sky = "rgba(155,188,15,255)";
+    white = "rgba(155,188,15,255)";    
+  }    
   if (key == 65 && !keys.includes(68)) {
     player.walking = 0;
     if (passwordScreen) {

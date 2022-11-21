@@ -149,7 +149,10 @@ var COIN = new animation(
   new sprite(new vector(16,128), new vector(8,8)),
   new sprite(new vector(24,128), new vector(8,8)),
   new sprite(new vector(32,128), new vector(8,8)),
-  new sprite(new vector(40,128), new vector(8,8))], [0,1,2,3,4], 2
+  new sprite(new vector(40,128), new vector(8,8)), 
+  new sprite(new vector(48,128), new vector(8,8)),
+  new sprite(new vector(56,128), new vector(8,8))],   
+  [0,0,0,2,2,1,1,1,2,2,3,3,3,4,4,5,5,5,2,2,0,0,0,6,6], 1
 );
 var MIST = new animation(
   [new sprite(new vector(80,0), new vector(16,16)),
@@ -191,15 +194,6 @@ var SWING = new animation(
   ],
   [2,1,1,0,0,1,1,2,2,3,3,3,2,2,1,0], 1, "swing"
 );
-22
-11
-00
-11
-22
-333
-22
-1
-0
 var SWINGLEFT = new animation(
   [new sprite(new vector(16,24), new vector(16,24)),
     new sprite(new vector(32,24), new vector(16,24)),
@@ -229,14 +223,14 @@ var SWORDSHARD = new animation([
   new sprite(new vector(128,16), new vector(8,8)),
   new sprite(new vector(136,16), new vector(8,8)),
   ],
-  [0,0,1,1,1,2,2,2,2,0,0]
+  [0,0,0,1,1,1,1,2,2,2,2,2,2,0,0,0]
 );
 var SWORDSHARDLEFT = new animation([
   new sprite(new vector(120,40), new vector(8,8)),
   new sprite(new vector(128,40), new vector(8,8)),
   new sprite(new vector(136,40), new vector(8,8)),
   ],
-  [0,0,1,1,1,2,2,2,2,0,0]
+  [0,0,0,1,1,1,1,2,2,2,2,2,2,0,0,0]
 );
 var STAFF = new animation(
   [new sprite(new vector(0,264), new vector(32,24)),

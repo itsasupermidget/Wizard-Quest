@@ -1,4 +1,8 @@
 function playerScript(parent) {
+  if (parent == player2 && collisions.includes(parent) && parent.position.distance(player.position) < TILE*6) {
+    drawNumbers(2+" ",parent.position.x-camera.x+parent.sprite.size.x/2-3,parent.position.y-camera.y-8);
+    drawNumbers(1+" ",player.position.x-camera.x+player.sprite.size.x/2-3,player.position.y-camera.y-8);
+  }
   var animLeft = (parent.animation == ATTACKLEFT || parent.animation == IDLELEFT || parent.animation == JUMPLEFT || parent.animation == WALKLEFT || parent.animation == LOOKUPLEFT || parent.animation == LANDINGLEFT || parent.animation == DUCKLEFT || parent.animation == FALLINGLEFT || parent.animation == SWINGLEFT || parent.animation == CLIMBLEFT || parent.animation == HURTLEFT);
   if (animLeft) {
     parent.animationFacing = -1;
@@ -178,8 +182,8 @@ function playerScript(parent) {
     necklace.sprite = new sprite(new vector(128, 600), new vector(8, 8));
   }
   if (parent.animation && parent.animation.name == "swing") {
-    if (parent.attacks.includes("sword") && (parent.animation.current == 5 || parent.animation.current == 6 || (parent.animation.current > 4 && parent.animation.current < parent.chargeLevel) && player.mana > 5)) {
-      var shard = new body(new vector(parent.position.x + 4 + (parent.animation.order.length - parent.animation.current) * parent.animationFacing * 2, parent.position.y + 12 - parent.animation.current), new sprite(new vector(0, 0), new vector(0, 0)));
+    if (parent.attacks.includes("sword") && (parent.animation.current == 5 || parent.animation.current == 7 || (parent.animation.current > 5 && parent.animation.current < parent.chargeLevel) && player.mana > 5)) {
+      var shard = new body(new vector(parent.position.x - 8 + (parent.animation.order.length - parent.animation.current) * parent.animationFacing * 2, parent.position.y + 14 - parent.animation.current), new sprite(new vector(0, 0), new vector(0, 0)));
       shard.animation = SWORDSHARD;
       if (parent.animationFacing == -1) {
         shard.animation = SWORDSHARDLEFT;

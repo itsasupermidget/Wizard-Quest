@@ -15,6 +15,8 @@ function load(name) {
 var LOADORDER = [
 "loading.js",
 "sprites.png",
+"nessprites.png",
+"gbsprites.png",  
 "physics.js",
 "globals.js",
 "builder.js",

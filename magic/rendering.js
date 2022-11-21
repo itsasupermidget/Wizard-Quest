@@ -1,3 +1,6 @@
+var black = "black";
+var sky = "rgba(104,136,252,255)";
+var white = "white";
 var cameraReset = false;
 var TOUCHCONTROLS = false;
 function drawGui(sX,sY,w,h,x,y,width,height) {
@@ -121,9 +124,9 @@ function loop(stamp) {
     canvas.style.marginTop = (window.innerHeight-canvas.height)/2-5+"px";
     screen.imageSmoothingEnabled = false;
     if (level.x == 1 || paused || loading) {
-      screen.fillStyle = "black";
+      screen.fillStyle = black;
     } else {
-      screen.fillStyle = "rgba(104,136,252,255)";
+      screen.fillStyle = sky;
     }
     screen.fillRect(0,0,canvas.width,canvas.height); //background color
     screen.translate(-TILE*SCALE,0);
@@ -132,7 +135,7 @@ function loop(stamp) {
         for (var y=0;y<map.height;y++) {
           for (var x=0;x<map.width;x++) {
           if (x*TILE <= camera.x+SCREENWIDTH-TILE/2 && x*TILE >= camera.x-TILE && y*TILE < camera.y+SCREENHEIGHT && y*TILE > camera.y+TILE) { //RENDER DISTANCE
-            if (level.x == 1 || (level.x == 0 && level.y % 2 == 0 && level.y != 0)) { //w1 background
+            if ((level.x == 1 || (level.x == 0 && level.y % 2 == 0 && level.y != 0))) { //w1 background
               iY = y
               if (y > 11 && redBackground.includes(x)) {
                 if (y > map.height-12) {
@@ -199,34 +202,41 @@ function loop(stamp) {
           collisions[i].play(); //run physics/rendering
         }
       }
-      screen.fillStyle = "black";
+      screen.fillStyle = black;
       screen.fillRect(0,0,canvas.width,32*SCALE);
       if (messageTimer > 0) {
         screen.fillRect(0,32*SCALE,canvas.width,8*SCALE);
         drawText(message,-1,32);
         messageTimer -= 1;
       }
-      drawGui(96,128,48,32,SCREENWIDTH/2-120,0); //inventory
-      drawText("health",SCREENWIDTH/2-58,5);
-      drawGui(0,160,32,16,SCREENWIDTH/2-56,12); //health bar    
-      drawGui(32,160,Math.max(0,player.health/player.maxHealth*24),8,SCREENWIDTH/2-52,16); //health gauge 
       drawText("level",-1,5);
       drawNumbers(level.x+" "+level.y,-1,16);
-      screen.fillStyle = "white";
+      screen.fillStyle = white;
       screen.fillRect(canvas.width/2-2*SCALE,19*SCALE,4*SCALE,2*SCALE);    
-      drawText("mana",SCREENWIDTH/2+29,5);
-      drawGui(0,160,32,16,SCREENWIDTH/2+24,12); //mana bar
-      if (!collisions.includes(key)) {
+      if (!collisions.includes(key) || key.visible) {
         drawGui(128,608,16,8,SCREENWIDTH/2-9,16); //key
+      }      
+      function playerGui(p, y){
+        drawText("health",SCREENWIDTH/2-58,y+5);
+        drawGui(0,160,32,16,SCREENWIDTH/2-56,y+12); //health bar    
+        drawGui(32,160,Math.max(0,p.health/p.maxHealth*24),8,SCREENWIDTH/2-52,y+16); //health gauge 
+        drawText("mana",SCREENWIDTH/2+29,y+5);
+        drawGui(0,160,32,16,SCREENWIDTH/2+24,y+12); //mana bar
+        drawGui(p.sprite.position.x,p.sprite.position.y,16,8,SCREENWIDTH/2-75,y+7); //hat
+        drawNumbers(p.lives+" ", 57, y+16);
+        drawGui(9,128,8,8,191,y+8); //coin
+        drawNumbers(p.coins+" ", 190, y+16);      
+        if (p.mana < 0) {
+          p.mana = 0;
+        }
+        drawGui(32,168,p.mana/p.maxMana*24,8,SCREENWIDTH/2+28,y+16); //mana gauge
       }
-      drawGui(120,176,8,8,SCREENWIDTH/2-74,16); //x
-      drawGui(player.sprite.position.x,player.sprite.position.y,16,8,SCREENWIDTH/2-75,8); //hat
-      drawNumbers(lives+" ", 62, 16);
-      if (player.mana < 0) {
-        player.mana = 0;
+      playerGui(player, 0);
+      if (player2.visible) {
+        playerGui(player2, 208);
       }
-      drawGui(32,168,player.mana/player.maxMana*24,8,SCREENWIDTH/2+28,16); //mana gauge
-      drawGui(96,138,48,20,SCREENWIDTH/2+76,10); //progress bar
+      drawGui(96,128,48,32,SCREENWIDTH/2-120,0); //inventory
+      drawGui(96,138,48,20,SCREENWIDTH/2+77,10); //progress bar
       if (!DEBUG) {
         drawNumbers(tick+" ", 8,8);
         drawNumbers(Math.round(tick/FPS)+" ", 8,16);
@@ -235,19 +245,19 @@ function loop(stamp) {
         lastFrame = unix;
       }
       if (!boss) {
-        drawText("progress",SCREENWIDTH/2+75,3);
-        drawGui(104,160,36*Math.min(1,stageProgress),12,SCREENWIDTH/2+80,14); //progress gauge
+        drawText("progress",SCREENWIDTH/2+76,3);
+        drawGui(104,160,36*Math.min(1,stageProgress),12,SCREENWIDTH/2+81,14); //progress gauge
         function minimap(that) {
-          screen.fillStyle = "white";
-          screen.fillRect(SCREENWIDTH*SCALE/2+80*SCALE + that.x*SCALE/WIDTH*36*SCALE,19*SCALE,1*SCALE,2*SCALE)
+          screen.fillStyle = white;
+          screen.fillRect(SCREENWIDTH*SCALE/2+81*SCALE + that.x*SCALE/WIDTH*36*SCALE,19*SCALE,1*SCALE,2*SCALE)
         }
-        screen.fillStyle = "white";
+        screen.fillStyle = white;
         minimap(spawn);
-        screen.fillRect(SCREENWIDTH*SCALE/2+80*SCALE + spawn.x*SCALE/WIDTH*36*SCALE,19*SCALE,((player.position.x-spawn.x)-spawn.x)*SCALE/WIDTH*36*SCALE,2*SCALE);
+        screen.fillRect(SCREENWIDTH*SCALE/2+81*SCALE + spawn.x*SCALE/WIDTH*36*SCALE,19*SCALE,((player.position.x-spawn.x)-spawn.x)*SCALE/WIDTH*36*SCALE,2*SCALE);
         minimap(door.position);
       } else {
         drawText("boss",SCREENWIDTH/2+86,3);
-        drawGui(104,160,36*boss.health/boss.maxHealth,12,SCREENWIDTH/2+80,14); //boss health
+        drawGui(104,160,36*boss.health/boss.maxHealth,12,SCREENWIDTH/2+81,14); //boss health
       }
       var neutralB = new vector(0,248);
       var upB = new vector(0,0);
@@ -282,7 +292,7 @@ function loop(stamp) {
         drawGui(downB.x,downB.y,16,16,SCREENWIDTH/2-94,12); 
       }
       if (player.health < 1 || loading) {
-        screen.fillStyle = "black";
+        screen.fillStyle = black;
         screen.fillRect(0,0,canvas.width,canvas.height);
       }
       if (player || player2) {
@@ -364,8 +374,13 @@ function loop(stamp) {
       }
     }
     if (player.health < 1 && !paused) {
-      drawText("you died!",-1,80);
-      drawText("but your quest continues",-1,96);
+      if (player.lives == 0) {
+        drawText("game over!",-1,80);
+        drawText("a familiar quest awaits",-1,96);
+      } else {
+        drawText("you died!",-1,80);
+        drawText("but your quest continues",-1,96);
+      }
     } else if (TOUCHCONTROLS) {
       drawGui(0,976,32,32,TOUCHPADCENTER.x-TILE, TOUCHPADCENTER.y-TILE);
       drawGui(32,976,64,64,BUTTONPADCENTER.x-TILE, BUTTONPADCENTER.y-TILE);   
