@@ -181,6 +181,13 @@ document.addEventListener("keyup", function(event) {
     if (key == 73) {
       player.health = player.maxHealth;
     }  
+    if (key == 188) {
+      generateLevel(new vector(level.x, level.y-1*-1));        
+    }
+    if (key == 77) {
+      levelCoins = that.coins;
+      generateLevel(new vector(level.x, level.y-1));        
+    }    
     if (key == 79) {
       player.velocity.y = -10;
       player.position.y -= 32;

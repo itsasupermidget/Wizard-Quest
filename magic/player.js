@@ -1,4 +1,15 @@
 function playerScript(parent) {
+  if (player2.position.distance(player.position) > TILE*12) {
+    if (player.position.x > player2.position.x) {
+      player2.position.x += Math.round(WALKSPEED/2);
+      var hits = player2.collision();
+      for (var i=0; i<hits.length; i++) {
+        if (hits[i].solid) {
+          player2.position.y = hits[i].position.y - player2.sprite.size.y;
+        }
+      }
+    }
+  }
   if (parent == player2 && collisions.includes(parent) && parent.position.distance(player.position) < TILE*6) {
     drawNumbers(2+" ",parent.position.x-camera.x+parent.sprite.size.x/2-3,parent.position.y-camera.y-8);
     drawNumbers(1+" ",player.position.x-camera.x+player.sprite.size.x/2-3,player.position.y-camera.y-8);

@@ -7,7 +7,7 @@ function plant(parent) {
   const FIREDAMAGE = 4;
   const RANGE = 12;
   if (player.position.distance(parent.position) < TILE*RANGE && parent.animation == PLANT) {
-    if (tick%24 == 0) {
+    if (tick%80 == 0 || tick%66 == 0) {
       if (player.position.y+player.sprite.size.y < parent.position.y && player.position.distance(parent.position) < TILE*5) {
         parent.animation = PLANTUP;
         parent.animation.start = tick;

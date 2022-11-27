@@ -388,10 +388,11 @@ function body(position,s) {
         var distance = this.position.distance(player.position);
         if (distance < 7*TILE) {
           if (player.position.x + player.sprite.size.x > this.position.x + this.sprite.size.x*1.5) {
-            this.velocity.y = -4;
+            //this.velocity.y = -4;
           } else {
             if (player.position.x >= this.position.x-16) {
-              this.acceleration.y += 1;
+              this.gravity = true;
+              this.velocity.y -= 1;
             }            
           }
         }
@@ -748,7 +749,13 @@ function body(position,s) {
         if (!collisions.includes(player2)) {
           player2.position = new vector(player.position.x, player.position.y);
         }
-        var goal = new vector(((player.position.x+player2.position.x+player.position.x)/3)-side, ((player.position.y+player2.position.y)/2)-top+TILE*looking);
+        var ahead = player;
+        var behind = player2;
+        if (player2.x > player.x) {
+          ahead = player2;
+          behind = player1;
+        }
+        var goal = new vector(((ahead.position.x+behind.position.x+ahead.position.x)/3)-side, ((ahead.position.y+behind.position.y)/2)-top+TILE*looking);
         camera.x += goal.x-camera.x;
         camera.y = goal.y;
         if (cameraReset) {
