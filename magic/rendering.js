@@ -1,6 +1,10 @@
 var black = "black";
 var sky = "rgba(104,136,252,255)";
 var white = "white";
+SPRITES = LOADED[2];
+sky = "rgba(104,136,252,255)";
+black = "black";
+white = "white";
 var cameraReset = false;
 var TOUCHCONTROLS = false;
 function drawGui(sX,sY,w,h,x,y,width,height) {
@@ -103,7 +107,7 @@ function itemGet(name, msg) {
   }
   if (!player.inventory.includes(name)) {
     message = msg;
-    messageTimer = 120;
+    messageTimer = 360;
     player.inventory.push(name);
   }
 }

@@ -342,13 +342,13 @@ function generateLevel(stage) {
           totalEnemies += 1;          
         }
         if (r == 255 && g == 0 && b == 255) {
-          var heart = new body(new vector(x*TILE+8,y*TILE+8),new sprite(new vector(0,128), new vector(8,8)));
+          var heart = new body(new vector(x*TILE+4,y*TILE+4),new sprite(new vector(0,128), new vector(8,8)));
           heart.name = "heart";
           heart.solid = false;
           collisions.push(heart);
         }
         if (r == 255 && g == 127 && b == 255) {
-          var coin = new body(new vector(x*TILE+8,y*TILE+8),new sprite(new vector(0,128), new vector(8,8)));
+          var coin = new body(new vector(x*TILE+4,y*TILE+4),new sprite(new vector(0,128), new vector(8,8)));
           coin.name = "coin";
           coin.solid = false;
           coin.animation = COIN;

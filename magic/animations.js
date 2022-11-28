@@ -78,13 +78,13 @@ var DEATH = new animation([
   new sprite(new vector(16,808), new vector(16,24)), 
   new sprite(new vector(32,808), new vector(16,24)),
   new sprite(new vector(48,808), new vector(16,24)),  
-  ],[0,1,1,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3], 1, "death");
+  ],[0,1,2,3,3,2,2,2,0,1,1,1,2,3], 2, "death");
 var RESPAWN = new animation([
   new sprite(new vector(0,808), new vector(16,24)), 
   new sprite(new vector(16,808), new vector(16,24)), 
   new sprite(new vector(32,808), new vector(16,24)),
   new sprite(new vector(48,808), new vector(16,24)),  
-  ],[3,3,3,2,2,1], 1, "respawn");
+  ],[3,3,2,2,1,0], 1, "respawn");
 var CLIMB = new animation([
   new sprite(new vector(0,664), new vector(16,24)), 
   new sprite(new vector(16,664), new vector(16,24)), 
@@ -287,6 +287,7 @@ var BROKENBEEHIVE = new animation([new sprite(new vector(128,616), new vector(16
 var BEES = new animation([new sprite(new vector(32,664), new vector(16,16)),new sprite(new vector(48,664), new vector(16,16)),new sprite(new vector(64,664), new vector(16,16)),new sprite(new vector(32,680), new vector(16,16)),new sprite(new vector(48,680), new vector(16,16))],[0,1,2,3,4]);
 var BEESRIGHT = new animation([new sprite(new vector(64,680), new vector(16,16)),new sprite(new vector(80,680), new vector(16,16)),new sprite(new vector(96,680), new vector(16,16)),new sprite(new vector(112,680), new vector(16,16)),new sprite(new vector(128,680), new vector(16,16))],[0,1,2,3,4]);
 var PLANT = new animation([new sprite(new vector(0,704), new vector(16,24)),new sprite(new vector(16,704), new vector(16,24))],[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],4);
+var PLANTDIE = new animation([new sprite(new vector(0,1032), new vector(16,24)),new sprite(new vector(16,1032), new vector(16,24)), new sprite(new vector(32,1032), new vector(16,24)),new sprite(new vector(48,1032), new vector(16,24))],[0,0,1,1,2,2,2,3,3,4,4],1);
 var PLANTUP = new animation([new sprite(new vector(16,704), new vector(16,24)),new sprite(new vector(32,696), new vector(16,32)),new sprite(new vector(48,696), new vector(16,32))],[0,1,2,2,1,1,0,0],2);
 var PLANTLEFT = new animation([new sprite(new vector(16,704), new vector(16,24)),new sprite(new vector(64,704), new vector(24,24)),new sprite(new vector(88,704), new vector(32,24))],[0,1,2,2,1,1,0,0],2);
 var PLANTRIGHT = new animation([new sprite(new vector(16,704), new vector(16,24)),new sprite(new vector(64,736), new vector(24,24)),new sprite(new vector(88,736), new vector(32,24))],[0,1,2,2,1,1,0,0],2);

@@ -200,10 +200,10 @@ function body(position,s) {
           }
         }
         if (this.name == "plant") {
-          if (this.animation != PLANT) {
-            this.animation = PLANT;
+          if (this.animation != PLANTDIE) {
+            this.animation = PLANTDIE;
             this.animation.start = tick;
-          }
+          }      
         }
         if (this.name == "evilbush") {
           this.name = "bush";

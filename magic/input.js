@@ -396,7 +396,11 @@ function pro() {
       var ud = Math.round(con.axes[1]*2)/2;
     }
     if (con.buttons[0].pressed) { //B
-      player2.jumping = true;
+      if (collisions.includes(player2)) {
+        player2.jumping = true;
+      } else {
+        player.jumping = true;
+      }
       keys.push(88);
       keyTimes.push(0);
     }
@@ -406,21 +410,37 @@ function pro() {
       keyTimes.push(0);
     }
     if (keys.includes(88) && (!con.buttons[0].pressed)) { //B up
-      jumpRelease(player2);
+      if (collisions.includes(player2)) {
+        jumpRelease(player2)
+      } else {
+        jumpRelease(player)
+      }
       delKey(88);
     }
     if (keys.includes(67) && (!con.buttons[2].pressed)) { //Y up
-      mistAttack(player2);
+      if (collisions.includes(player2)) {
+        mistAttack(player2)
+      } else {
+        mistAttack(player)
+      }
       password = password.slice(0,password.length-1);
       delKey(67);
     }
     if (con.buttons[12].pressed || ud == -1) { //Up
-      player2.climbing = -1;
+      if (collisions.includes(player2)) {
+        player2.climbing = -1;
+      } else {
+        player.climbing = -1;
+      }
       keys.push(87);
       keyTimes.push(0);
     }
     if (con.buttons[13].pressed || ud == 1) { //Down
-      player2.climbing = 1;
+      if (collisions.includes(player2)) {
+        player2.climbing = 1;
+      } else {
+        player.climbing = 1;
+      }
       keys.push(83);
       keyTimes.push(0);
     }
@@ -457,22 +477,41 @@ function pro() {
       }
     } 
     if (con.buttons[14].pressed || lr == -1) { //Left
-      leftButton(player2);
+      if (collisions.includes(player2)) {
+        leftButton(player2);
+      } else {
+        leftButton(player);
+      }
       keys.push(37);
       keyTimes.push(0);
     } else if (con.buttons[15].pressed || lr == 1) { //Right
-      rightButton(player2);
+      if (collisions.includes(player2)) {
+        rightButton(player2);
+      } else {
+        rightButton(player);
+      }
       keys.push(39);
       keyTimes.push(0);
     } else {
-      player2.walking = 0;
+      if (collisions.includes(player2)) {
+        player2.walking = false;
+      } else {
+        player.walking = false;
+      }
     }
     if (con.buttons[3].pressed) { //X
-      swingSword(player2);
+      if (collisions.includes(player2)) {
+        swingSword(player2);
+      } else {
+        swingSword(player);
+      }
     }
     if (con.buttons[1].pressed) { //A
-      swingStaff(player2);
-
+      if (collisions.includes(player2)) {
+        swingStaff(player2);
+      } else {
+        swingStaff(player);
+      }
     }
     if (con.buttons[9].pressed && !keys.includes(13)) {
       keys.push(13);

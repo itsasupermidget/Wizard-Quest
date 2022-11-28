@@ -245,6 +245,9 @@ function playerScript(parent) {
             looking = -2;
           }          
         }
+        if (parent.velocity.x != 0 || player.onladder) {
+          looking = 0;
+        }
       } else {
         if (parent.animation != IDLELEFT) {
           IDLELEFT.start = tick;
@@ -292,7 +295,7 @@ function playerScript(parent) {
     }
   }
   if (parent.velocity.y != 0 && !parent.onladder && !parent.onplatform && (!parent.animation || (parent.animation.name != "landing" && parent.animation.name != "attack"))) {
-    if (parent.velocity.y >= GRAVITY && parent.coyoteTime < 1) { //falling anim
+    if (parent.velocity.y >= GRAVITY/2 && parent.coyoteTime < 1) { //falling anim
       if (parent.animationFacing == 1 && parent.animation.name != "falling") {
         parent.animation = FALLING;
         parent.animation.start = tick;
