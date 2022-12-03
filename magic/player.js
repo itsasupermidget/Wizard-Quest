@@ -1,4 +1,17 @@
 function playerScript(parent) {
+  function hatOffset() {
+    if (parent.canFloat && parent.sprite.position.y < 1008) {
+      parent.sprite.position.y += 1008;
+    } else if (!parent.canFloat && parent.sprite.position.y >= 1008) {
+      parent.sprite.position.y -= 1008;    
+    }
+  }
+  hatOffset();
+  if (parent.jumpHold && parent.canFloat) {
+    if (parent.velocity.y > 0) {
+      parent.velocity.y = -GRAVITY;
+    }
+  }
   if (player2.position.distance(player.position) > TILE*12) {
     if (player.position.x > player2.position.x) {
       player2.position.x += Math.round(WALKSPEED/2);
@@ -343,6 +356,7 @@ function playerScript(parent) {
   } else {
     necklace.visible = false;
   }
+  hatOffset();
 }
 
 function reface(parent) {
@@ -420,10 +434,16 @@ function playerJump(parent) {
   if (parent.jumps > 0) {
     playSound("jump");
     var maxJump = 3; //jump charge ends here
-    parent.velocity.y = -Math.round(JUMPPOWER * (parent.jumpCharge / maxJump));
+    var hatMult = 1;
+    if (parent.canFloat) {
+      hatMult = 1.2;
+    }
+    parent.velocity.y = -Math.round((JUMPPOWER * (parent.jumpCharge / maxJump)));
     if (parent.velocity.y > -JUMPPOWER) {
       parent.velocity.y = -10;
     }
+    parent.velocity.y *= hatMult;
+    parent.velocity.y = Math.round(parent.velocity.y);
     parent.jumpCharge = 0;
     parent.freefall = true;
     parent.jumping = false;

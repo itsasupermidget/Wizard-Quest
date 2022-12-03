@@ -207,7 +207,7 @@ function generateLevel(stage) {
           collisions.push(generator);
         }        
         if (r == 170 && g == 0 && b == 0) {
-          var tumble = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));
+          var tumble = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,0), new vector(16,16)));
           tumble.name = "tumble";
           tumble.gravity = true;
           tumble.solid = false;
@@ -318,6 +318,25 @@ function generateLevel(stage) {
           totalCollectables += 1;
           collisions.push(chest);
         }
+        if ((r == 128 || r == 166) && (g == 96 || g == 116) && b == 0) {
+          var box = new body(new vector(x*TILE,y*TILE), CHESTCLOSED);
+          box.name = "box";
+          box.solid = false;
+          box.sprite = BOX;
+          collisions.push(box);
+          var ladderTop = new body(new vector(x*TILE,y*TILE-11), new sprite(new vector(64,648), new vector(16,16)));
+          ladderTop.name = "platform";
+          ladderTop.solid = false;
+          ladderTop.visible = false;
+          box.parent = ladderTop;
+          collisions.push(ladderTop);     
+          if (r == 166) {
+            box.maxHealth = 300;
+          }
+          if (g == 116) {
+            box.maxHealth = 200;
+          }
+        }          
         if (r == 128 && g == 128 && b == 255) {
           var ladder = new body(new vector(x*TILE,y*TILE), new sprite(new vector(80,64), new vector(16,16)));
           ladder.name = "ladder";

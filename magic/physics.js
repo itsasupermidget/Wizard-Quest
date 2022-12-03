@@ -40,6 +40,8 @@ function body(position,s) {
   this.jumping = false;
   this.jumpCharge = 0;
   this.jumps = 1;
+  this.jumpHold = false;
+  this.canFloat = true;
   this.charging = false;
   this.chargeLevel = 0;
   this.fizzles = false;
@@ -112,6 +114,7 @@ function body(position,s) {
         this.animation = DEATH;
         this.flicker = false;
         this.visible = true;
+        this.canFloat = false;
         if (this.animation.current == this.animation.order.length-2) {
           var respawnPercent = .7;
           if (difficultyGoal == 0) {
@@ -148,7 +151,7 @@ function body(position,s) {
           heart.velocity = new vector(0,-8);
           heart.gravity = true;
           heart.solid = false;
-          if (player.health/player.maxHealth > .5 && player.mana/player.maxMana > .25) {
+          if ((player.health/player.maxHealth > .5 && player.mana/player.maxMana > .25 && !(this.name == "box" && this.maxHealth == 300)) || (this.name == "box" && this.maxHealth == 200)) {
             heart.name = "coin";
             heart.animation = COIN;
           }
@@ -160,6 +163,16 @@ function body(position,s) {
             this.velocity = new vector(0,-2);
           }          
         }
+        if (this.name == "box") {
+          console.log(this.maxHealth)
+          if (this.animation != BOXBREAK) {
+            this.animation = BOXBREAK;
+            this.animation.start = tick;
+            if (this.maxHealth == 100) {
+              collisions[collisions.indexOf(this.parent)] = null;
+            }
+          }          
+        }        
         if (this.name == "knight") {
           if (this.facing == -1 && this.animation != KNIGHTDIE) {
             this.animation = KNIGHTDIE;
@@ -236,13 +249,15 @@ function body(position,s) {
               this.parent.children.splice(this.parent.children.indexOf(this),1);
             }
           }
-          if ((this.name == "skeleton" || this.name == "knight" || this.name == "bees" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey") && this.health < 1) {
-            enemies -= 1;
-            key.position = new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2);
-            if (this.owner) {
-              this.owner.minions -= 1;
+          if ((this.name == "skeleton" || this.name == "knight" || this.name == "bees" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey" || this.name == "box") && this.health < 1 && this.sprite) {
+            if (this.name != "box") {
+              enemies -= 1;
+              key.position = new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2);
+              if (this.owner) {
+                this.owner.minions -= 1;
+              }
             }
-            if (this.name != "bush") {
+            if (this.name != "bush" && !(this.name == "box" && this.maxHealth == 100)) {
               collisions[collisions.indexOf(this)] = heart;
             } else {
               collisions[collisions.indexOf(this)] = null;
@@ -420,6 +435,14 @@ function body(position,s) {
           }
         }
         this.sprite = DOORSPRITE;
+      }
+      if (this.name == "box") {
+        var hits = this.collision();
+        for (var i=0; i<hits.length; i++) {
+          if (hits[i].name == "mist" || hits[i].name == "fire" || hits[i].name == "sword") {
+            this.health = 0;
+          }
+        }
       }
       if (this.name == "spawner") {
         spawner(this);

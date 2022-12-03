@@ -64,7 +64,9 @@ function skeleton(parent) {
       if (parent.debounce == 0 && !parent.flicker) {
         parent.debounce = DEBOUNCE;
         if (that.velocity.y >= parent.velocity.y && that.jumpCharge == 0) {
-          that.hit(DAMAGE);
+          if (!(that.velocity.y > parent.velocity.y)) {
+            that.hit(DAMAGE);
+          }
           parent.velocity.x = -parent.facing*KNOCKBACK;
         }
         if (that.jumpCharge > 0 || that.jumping) {

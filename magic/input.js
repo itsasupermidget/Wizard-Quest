@@ -74,6 +74,9 @@ function startButton() {
     if (password.length == 4) {
       loadPassword("ZWZWZ3ZQ44ZXWZZ0");     
     }
+    if (password.length == 5) {
+      loadPassword("ZXZWZWZQ44ZXWZZ0");
+    }
     if (password.length == 16) {
       loadPassword(password);
       modeSelect = 3;
@@ -143,6 +146,7 @@ document.addEventListener("keydown", function(event) {
       keyTimes[keyMemory.indexOf(key)] = 0;
       if ((key == 75 || key == 32) && !player.drop) {
         player.jumping = true;
+        player.jumpHold = true;
       }
       if ((key == 88) && !player.drop) {
         player2.jumping = true;
@@ -177,10 +181,6 @@ document.addEventListener("keydown", function(event) {
 
 document.addEventListener("keyup", function(event) {
   var key = event.keyCode;
-  if (DEBUG) {
-    if (key == 73) {
-      player.health = player.maxHealth;
-    }  
     if (key == 188) {
       generateLevel(new vector(level.x, level.y-1*-1));        
     }
@@ -188,6 +188,10 @@ document.addEventListener("keyup", function(event) {
       levelCoins = that.coins;
       generateLevel(new vector(level.x, level.y-1));        
     }    
+  if (DEBUG) {
+    if (key == 73) {
+      player.health = player.maxHealth;
+    }  
     if (key == 79) {
       player.velocity.y = -10;
       player.position.y -= 32;
@@ -302,6 +306,7 @@ document.addEventListener("keyup", function(event) {
   }
   if (key == 75 || key == 32) {
     jumpRelease(player);
+    player.jumpHold = false;
   }
   if (key == 88) {
     jumpRelease(player2);
