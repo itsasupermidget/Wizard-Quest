@@ -160,7 +160,7 @@ function loop(stamp) {
               }           
               if (backgroundTiles[y][x] == "bricks") {
                 drawGui(64,48,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);
-              }
+              }            
               y = iY
             } else {
               var backgroundLevel = 22;
@@ -181,6 +181,12 @@ function loop(stamp) {
                   drawGui(128,808,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y); //dirt
                 }
               }
+              if (backgroundTiles[y][x] == "sandtop") {
+                drawGui(128,792,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);
+              }
+              if (backgroundTiles[y][x] == "sand") {
+                drawGui(64,992,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);
+              }  
             }
             }
           }

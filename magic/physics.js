@@ -249,7 +249,7 @@ function body(position,s) {
               this.parent.children.splice(this.parent.children.indexOf(this),1);
             }
           }
-          if ((this.name == "skeleton" || this.name == "knight" || this.name == "bees" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey" || this.name == "box") && this.health < 1 && this.sprite) {
+          if ((this.name == "skeleton" || this.name == "knight" || this.name == "bees" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey" || this.name == "box" || this.name == "cactus") && this.health < 1 && this.sprite) {
             if (this.name != "box") {
               enemies -= 1;
               key.position = new vector(this.position.x+this.sprite.size.x/2, this.position.y+this.sprite.size.y/2);
@@ -262,7 +262,7 @@ function body(position,s) {
             } else {
               collisions[collisions.indexOf(this)] = null;
             }
-            if (this.name == "knight" || this.name == "beehive" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey") {
+            if (this.name == "knight" || this.name == "beehive" || this.name == "plant" || this.name == "warrior" || this.name == "bush" || this.name == "monkey" || this.name == "cactus") {
               var heartClone = heart.clone();
               heartClone.position.x += 16;
               collisions.push(heartClone);
@@ -374,6 +374,9 @@ function body(position,s) {
       if (this.name == "skeleton" && this.health > 0) {
         skeleton(this);
       }
+      if (this.name == "tumble" && this.health > 0) {
+        tumble(this);
+      }      
       if (this.name == "spikes" || this.name == "rocks") {
         var hits = this.collision();
         for (var i=0;i<hits.length;i++) {

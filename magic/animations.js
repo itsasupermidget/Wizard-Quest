@@ -393,6 +393,8 @@ var CACTUSATTACK = new animation([
   new sprite(new vector(896,912), new vector(16,32)),
 ], [0,1,2,3,4,3,2,1], 2);
 var TUMBLEWEED = new animation([
-  new sprite(new vector(80,912), new vector(16,16)),
-  new sprite(new vector(104,912), new vector(16,16)),  
+  new sprite(new vector(16,896), new vector(16,16)),
+  new sprite(new vector(32,896), new vector(16,16)),  
+  new sprite(new vector(48,896), new vector(16,16)),
+  new sprite(new vector(64,896), new vector(16,16)),    
 ], [0,1,2,3,4,3,2,1], 2);

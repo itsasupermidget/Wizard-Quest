@@ -178,8 +178,14 @@ function generateLevel(stage) {
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(64,48), new vector(16,16)))); //bricks
         }
         if (r == 32 && g == 0 && b == 0) {
-          backgroundTiles[y][x] = "bricks"
+          backgroundTiles[y][x] = "bricks";
         }
+        if (r == 255 && g == 255 && b == 186) {
+          backgroundTiles[y][x] = "sandtop";
+        }
+        if (r == 255 && g == 255 && b == 132) {
+          backgroundTiles[y][x] = "sand";
+        }        
         if (r == 255 && g == 255 && b == 204) {
           collisions.push(new body(new vector(x*TILE,y*TILE), new sprite(new vector(0,896), new vector(16,16))));
         }        
@@ -213,8 +219,6 @@ function generateLevel(stage) {
           tumble.solid = false;
           tumble.animation = TUMBLEWEED;
           collisions.push(tumble);
-          enemies += 1;
-          totalEnemies += 1;
         }        
         if (r == 0 && g == 170 && b == 0) {
           var cactus = new body(new vector(x*TILE,y*TILE-TILE),new sprite(new vector(0,0), new vector(16,32)));

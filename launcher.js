@@ -33,6 +33,7 @@ var LOADORDER = [
 "objects/monkey.js",
 "objects/cactus.js",
 "objects/spawner.js",
+"objects/tumble.js",
 "player.js",
 "input.js",
 "rendering.js",

@@ -436,7 +436,7 @@ function playerJump(parent) {
     var maxJump = 3; //jump charge ends here
     var hatMult = 1;
     if (parent.canFloat) {
-      hatMult = 1.2;
+      hatMult = 1.1;
     }
     parent.velocity.y = -Math.round((JUMPPOWER * (parent.jumpCharge / maxJump)));
     if (parent.velocity.y > -JUMPPOWER) {
