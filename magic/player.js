@@ -6,6 +6,9 @@ function playerScript(parent) {
       parent.sprite.position.y -= 1008;    
     }
   }
+  if (difficultyGoal == 0) {
+    parent.canFloat = true;
+  }
   hatOffset();
   if (parent.jumpHold && parent.canFloat) {
     if (parent.velocity.y > 0) {

@@ -1,6 +1,6 @@
 function tumble(parent) {
-  const DAMAGE = 5;
-  const DEBOUNCE = 10;
+  const DAMAGE = 4;
+  const DEBOUNCE = 5;
   const SPEED = 10;
   const RANGE = 12;
   const JUMP = 8;
@@ -16,12 +16,10 @@ function tumble(parent) {
     if (that.name == "player") {
       if (parent.debounce == 0 && !parent.flicker) {
         parent.debounce = DEBOUNCE;
-        if (that.velocity.y >= parent.velocity.y && that.jumpCharge == 0) {
-          if (!(that.velocity.y > parent.velocity.y)) {
-            that.hit(DAMAGE);
-          }
+        if (that.jumpCharge == 0 && that.velocity.y == 0) {
+          that.hit(DAMAGE);
         }
-        if (that.velocity.y > parent.velocity.y) {
+        if (that.velocity.y > parent.velocity.y && that.velocity.y != 0) {
           that.bounce(parent);
         }
       }

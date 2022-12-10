@@ -41,7 +41,7 @@ function body(position,s) {
   this.jumpCharge = 0;
   this.jumps = 1;
   this.jumpHold = false;
-  this.canFloat = true;
+  this.canFloat = false;
   this.charging = false;
   this.chargeLevel = 0;
   this.fizzles = false;
@@ -566,10 +566,6 @@ function body(position,s) {
           this.dead = true;
           this.health = 0;
         }        
-        if (this.name == "fire" && player.mana < 5) {
-          this.health = 0;
-          this.dead = true;
-        }
         if (this.acceleration.y == 0) {
           if (!this.canMove(new vector(0,-1))) {
             this.acceleration.y = 1;
@@ -905,7 +901,6 @@ function body(position,s) {
           this.mana -= 100/amount;
           if (this.mana < 0) {
             this.health += this.mana;
-            console.log(this.mana)
             this.mana = 0;
           }
         } else {

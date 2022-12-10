@@ -25,15 +25,15 @@ function startButton() {
   } else if (modeSelect != false) {
     if (menu == 0) { //select easy
       difficultyGoal = 0;
-      lives = 9;
+      player.lives = 9;
     }
     if (menu == 1) { //select normal
       difficultyGoal = .5;
-      lives = 5;
+      player.lives = 5;
     }
     if (menu == 2) { //select hard
       difficultyGoal = 1;
-      lives = 1;
+      player.lives = 1;
     }
     if (modeSelect == 1) { //new game
       level = new vector(1,0);

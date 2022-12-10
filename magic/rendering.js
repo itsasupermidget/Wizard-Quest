@@ -107,7 +107,7 @@ function itemGet(name, msg) {
   }
   if (!player.inventory.includes(name)) {
     message = msg;
-    messageTimer = 360;
+    messageTimer = 720;
     player.inventory.push(name);
   }
 }
