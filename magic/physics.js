@@ -159,9 +159,8 @@ function body(position,s) {
         if (this.name == "skeleton") {
           if (this.animation != SKELETONDIE) {
             this.animation = SKELETONDIE;
-            this.animation.start = tick;
             this.velocity = new vector(0,-2);
-          }          
+          }
         }
         if (this.name == "box") {
           console.log(this.maxHealth)
@@ -412,6 +411,17 @@ function body(position,s) {
               this.gravity = true;
               this.velocity.y -= 1;
             }            
+          }
+        }
+        if (this.gravity) {
+          this.solid = false;
+          var hits = this.collision();
+          for (var i=0;i<hits.length;i++) {
+            if (hits[i].position.y < this.position.y) {
+              this.visible = false;
+              this.position.y += 2000;
+              this.gravity = false;
+            }
           }
         }
       }

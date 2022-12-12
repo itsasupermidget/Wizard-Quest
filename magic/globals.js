@@ -93,6 +93,10 @@ function animation(sprites, order, speed, name) {
     var frameId = this.order[this.current];
     return sprites[frameId];
   }
+  this.projectCurrent = function(projectedStart) {
+    var frame = tick-projectedStart;
+    return (frame+1)%(this.order.length);
+  }
   this.clone = function() {
     return new animation(this.sprites,this.order,null,this.name);
   }
