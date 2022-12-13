@@ -380,7 +380,7 @@ function body(position,s) {
         var hits = this.collision();
         for (var i=0;i<hits.length;i++) {
           var that = hits[i];
-          if ((that.name == "player" || that.name == "skeleton" || that.name == "warrior") && this.debounce == 0) {
+          if (((that.name == "player" && (that.position.x > this.position.x+3 || that.position.x+that.sprite.size.x < this.position.x+this.sprite.size.x-3)) || that.name == "skeleton" || that.name == "warrior") && this.debounce == 0) {
             if (this.name == "rocks" || (this.name == "spikes" && that.position.y+that.sprite.size.y >= this.position.y+this.sprite.size.y/2)) {
               this.debounce = 10;
               if (this.canMove(new vector(1,0),true) || this.canMove(new vector(-1,0),true) || this.gravity || this.name == "rocks") {
@@ -413,15 +413,10 @@ function body(position,s) {
             }            
           }
         }
-        if (this.gravity) {
-          this.solid = false;
-          var hits = this.collision();
-          for (var i=0;i<hits.length;i++) {
-            if (hits[i].position.y < this.position.y) {
-              this.visible = false;
-              this.position.y += 2000;
-              this.gravity = false;
-            }
+        if (!this.canMove(new vector(0,this.velocity.y+1))) {
+          this.sprite.size.y -= 1;
+          if (this.sprite.size < TILE/2) {
+            this.visible = false;
           }
         }
       }
@@ -721,7 +716,7 @@ function body(position,s) {
       if (this.name == "monkey" && this.health > 0) {
         monkey(this);
       }
-      if (this.gravity && this.canMove(new vector(0,this.velocity.y+1))) {
+      if (this.gravity && (this.canMove(new vector(0,this.velocity.y+1)))) {
         this.velocity.add(new vector(0,GRAVITY));
         this.velocity.y = Math.min(this.velocity.y,TERMINALVELOCITY);
         if (this.name == "player") {
