@@ -838,7 +838,7 @@ function body(position,s) {
       this.render(fromParent);
       if (this.hitTimer > 0 && this.lastHit > 0) {
         this.hitTimer -= 1;
-        drawNumbers(this.lastHit+" ",this.position.x-camera.x+this.sprite.size.x/2,this.position.y-camera.y+8-this.hitTimer);
+        drawNumbers(this.lastHit+" ",this.position.x-camera.x+this.sprite.size.x/2-this.hitTimer*this.velocity.x,this.position.y-camera.y+8-this.hitTimer);
       }
     }
     if (this.position.y > map.height*TILE && !loading) {

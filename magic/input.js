@@ -206,11 +206,11 @@ document.addEventListener("keyup", function(event) {
   }
   if (player.health > 0) {
     if (key == 74 || key == 16) {
-      if (keys.includes(38) && !BUTTONATTACKS) {
+      if (keys.includes(87) && !BUTTONATTACKS) {
         swingSword(player);
-      } else if (keys.includes(40) && !BUTTONATTACKS) {
+      } else if (keys.includes(83) && !BUTTONATTACKS) {
         swingStaff(player);
-      } else if ((!keys.includes(38) && !keys.includes(40)) || BUTTONATTACKS) {
+      } else if ((!keys.includes(87) && !keys.includes(83)) || BUTTONATTACKS) {
         mistAttack(player);
       }
     }

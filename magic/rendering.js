@@ -161,6 +161,9 @@ function loop(stamp) {
               if (backgroundTiles[y][x] == "bricks") {
                 drawGui(64,48,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);
               }            
+              if (backgroundTiles[y][x] == "bbricks") {
+                drawGui(80,1056,TILE,TILE,x*TILE-camera.x+TILE,y*TILE-camera.y);
+              }                          
               y = iY
             } else {
               var backgroundLevel = 22;
@@ -338,8 +341,8 @@ function loop(stamp) {
         if (menu == 2) { //hightlight continue
           highlight(-1,160,13); 
         }
-        if (menu == 3) { //hightlight settings
-          highlight(-1,176,8); 
+        if (menu == 3) { //hightlight battle mode
+          highlight(-1,196,8); 
         }      
       } else if (passwordScreen) {
         drawText("press start",-1,96);

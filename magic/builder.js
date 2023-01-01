@@ -180,6 +180,9 @@ function generateLevel(stage) {
         if (r == 32 && g == 0 && b == 0) {
           backgroundTiles[y][x] = "bricks";
         }
+        if (r == 16 && g == 0 && b == 0) {
+          backgroundTiles[y][x] = "bbricks";
+        }          
         if (r == 255 && g == 255 && b == 186) {
           backgroundTiles[y][x] = "sandtop";
         }
