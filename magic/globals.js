@@ -1,6 +1,6 @@
 var SPRITES = LOADED[1];
 var TILE = 16;
-var FPS = 30;
+var FPS = 20;
 var WIDTH;
 var HEIGHT;
 var symbols = ["Z","W","Q","X","V","0","1","2","3","4"];

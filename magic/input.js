@@ -148,7 +148,7 @@ document.addEventListener("keydown", function(event) {
         player.jumping = true;
         player.jumpHold = true;
       }
-      if ((key == 88) && !player.drop) {
+      if ((key == 73) && !player.drop) {
         player2.jumping = true;
       }      
       if (key == 17) {
@@ -157,13 +157,13 @@ document.addEventListener("keydown", function(event) {
       if (key == 65) {
         leftButton(player);
       }
-      if (key == 37) {
+      if (key == 74) {
         leftButton(player2);
       }      
       if (key == 68) {
         rightButton(player);
       }
-      if (key == 39) {
+      if (key == 76) {
         rightButton(player2);
       }      
       if (key == 87) {
@@ -184,7 +184,7 @@ document.addEventListener("keyup", function(event) {
     if (key == 188) {
       generateLevel(new vector(level.x, level.y-1*-1));        
     }
-    if (key == 77) {
+    if (key == 190) {
       levelCoins = that.coins;
       generateLevel(new vector(level.x, level.y-1));        
     }    
@@ -205,7 +205,7 @@ document.addEventListener("keyup", function(event) {
     }
   }
   if (player.health > 0) {
-    if (key == 74 || key == 16) {
+    if ((key == 74 && !collisions.includes(player2)) || key == 16) {
       if (keys.includes(87) && !BUTTONATTACKS) {
         swingSword(player);
       } else if (keys.includes(83) && !BUTTONATTACKS) {
@@ -214,7 +214,7 @@ document.addEventListener("keyup", function(event) {
         mistAttack(player);
       }
     }
-    if (key == 67) {
+    if (key == 77) {
       if (keys.includes(38) && !BUTTONATTACKS) {
         swingSword(player2);
       } else if (keys.includes(40) && !BUTTONATTACKS) {
@@ -275,7 +275,7 @@ document.addEventListener("keyup", function(event) {
       }
     }
   }
-  if (key == 37 && !keys.includes(39)) {
+  if (key == 74 && !keys.includes(76)) {
     player2.walking = 0;
     if (passwordScreen) {
       if (menu == 0) {
@@ -285,7 +285,7 @@ document.addEventListener("keyup", function(event) {
       }
     }
   }  
-  if (key == 39 && !keys.includes(37)) {
+  if (key == 76 && !keys.includes(74)) {
     player2.walking = 0;
     if (passwordScreen) {
       if (menu == 9) {
@@ -308,7 +308,7 @@ document.addEventListener("keyup", function(event) {
     jumpRelease(player);
     player.jumpHold = false;
   }
-  if (key == 88) {
+  if (key == 73) {
     jumpRelease(player2);
   }  
   if (key == 13) {

@@ -6,6 +6,7 @@ function load(name) {
     document.head.appendChild(object);
   } else if (type == "png") {
     object = document.createElement("img"); 
+    object.crossOrigin = "anonymous";
   }
   object.src = "magic/"+name;
   LOADED.push(object);
