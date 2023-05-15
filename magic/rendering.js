@@ -199,7 +199,7 @@ function loop(stamp) {
       nes = [];
       var offset = 0;
       for (var i=0;i<collisions.length;i++) {
-        if (collisions[i] && collisions[i] != player && ((i+offset)%2 == 0) || tick/FPS > 20 || nes.length < 65 || (collisions[i] && collisions[i].solid)) {
+        if (collisions[i] && collisions[i] != player && ((i+offset)%2 == 0) || tick/FPS > 20 || true || (collisions[i] && collisions[i].solid)) { //nes.length < 65
           if (tick%2 == 0) {
             offset = 1;
           } else {

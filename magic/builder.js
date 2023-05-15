@@ -196,6 +196,12 @@ function generateLevel(stage) {
           spawn = new vector(x*TILE,y*TILE-9);
           player.position.x = spawn.x;
           player.position.y = spawn.y;
+          var hat = new body(new vector(x*TILE+TILE*4,y*TILE),new sprite(new vector(0,128), new vector(8,8)));
+          hat.name = "hat";
+          hat.solid = false;
+          hat.animation = TOPHAT;
+          hat.gravity = true;
+          collisions.push(hat);          
         }
         if (r == 255 && g == 255 && b == 0) {
           var skeleton = new body(new vector(x*TILE,y*TILE),new sprite(new vector(0,48), new vector(16,16)));

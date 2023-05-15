@@ -154,6 +154,11 @@ var COIN = new animation(
   new sprite(new vector(56,128), new vector(8,8))],   
   [0,0,0,2,2,1,1,1,2,2,3,3,3,4,4,5,5,5,2,2,0,0,0,6,6], 1
 );
+var TOPHAT = new animation(
+  [new sprite(new vector(33,1008), new vector(15,9)),
+  new sprite(new vector(65,1008), new vector(15,9))],   
+  [0,1], 7
+);
 var MIST = new animation(
   [new sprite(new vector(80,0), new vector(16,16)),
     new sprite(new vector(96,0), new vector(16,16)),
@@ -388,10 +393,10 @@ var CACTUS = new animation([
   new sprite(new vector(64,912), new vector(16,32)),
 ], [0,1,2,3,4,3,2,1], 2);
 var CACTUSATTACK = new animation([
-  new sprite(new vector(80,912), new vector(16,32)),
-  new sprite(new vector(104,912), new vector(16,32)),  
-  new sprite(new vector(896,912), new vector(16,32)),
-], [0,1,2,3,4,3,2,1], 2);
+  new sprite(new vector(80,912), new vector(16,48)),
+  new sprite(new vector(104,912), new vector(16,48)),  
+  new sprite(new vector(896,912), new vector(16,48)),
+], [0,1,2,1], 2);
 var TUMBLEWEED = new animation([
   new sprite(new vector(16,896), new vector(16,16)),
   new sprite(new vector(32,896), new vector(16,16)),  

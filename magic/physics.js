@@ -507,6 +507,27 @@ function body(position,s) {
           }
         }      
       }      
+      if (this.name == "hat" && this.health > 0) {
+        var hits = this.collision();
+        this.visible = true;
+        for (var i=0;i<hits.length;i++) {
+          var that = hits[i];
+          if (that.name == "player" && this.health > 0) {
+            that.canFloat = true;
+            playSound("collect");
+            this.health = 0;
+            this.visible = false;
+          }
+          if (that.name == "spikes" || that.name == "lava") {
+            this.visible = false;
+            this.health = 0;
+          }
+          if (that.solid) {
+            this.position.y -= 8;
+            this.visible = false;
+          }
+        }      
+      }      
       if (this.name == "timer") {
         var frame = Math.floor((tick%480)/160)+1;
         this.visible = this.health == frame || this.health == 1 && frame == 2 || this.health == 2 && frame == 3 || this.health == 3 && frame == 1;
